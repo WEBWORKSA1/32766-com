@@ -1,0 +1,110 @@
+<!--
+title: 32766 — Character, Byte & Token Counter + Limits Checker
+description: Free character, word, byte and AI token counter that checks your text against 160 real limits — X, Instagram, SEO, ads, SMS, Lucene, Excel.
+scripts: tools
+priority: 1.0
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"32766 Fit Checker","url":"https://32766.com/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Counts characters, words, UTF-8 bytes and estimated AI tokens and checks text against real platform, SEO, SMS, database and AI limits."}
+-->
+<section class="hero" style="padding-bottom:10px"><div class="wrap">
+<span class="eyebrow">Free · private · in your browser</span>
+<h1 style="font-size:clamp(2rem,4.4vw,3.2rem);max-width:900px">Will it <span class="hl">fit?</span> Stay one byte under the limit.</h1>
+<p class="lead">Paste any text and see its characters, words, UTF-8 bytes and AI tokens — checked live against {{COUNT_CHECK}} real limits, from a 280-character post to Lucene's 32,766-byte term ceiling.</p>
+</div></section>
+<section class="section-tight" style="padding-top:12px"><div class="wrap grid split">
+<div>{{CHECKER}}
+<div class="card" style="margin-top:18px"><h3>Your own limit</h3><p class="muted" style="font-size:.92rem">A form field, a CMS column, a client brief — set any limit and count it the way that system does.</p>
+<div class="row2"><div class="field"><label for="customLimit">Limit</label><input type="number" id="customLimit" min="1" value="160"></div>
+<div class="field"><label for="customMethod">Counted as</label><select id="customMethod"><option value="g">Visible characters</option><option value="u16">UTF-16 units (JavaScript, Java, Excel)</option><option value="b">UTF-8 bytes (databases, APIs)</option><option value="w">Words</option><option value="tok">AI tokens (estimate)</option></select></div></div>
+<div class="meter" id="customMeter"><i></i></div><p class="mono" id="customOut" style="margin:.6rem 0 0">Set a limit</p></div>
+</div>
+<div style="position:sticky;top:84px">{{LIMIT_LIST}}
+<div class="card" style="margin-top:18px"><h3>Why counts disagree</h3><p style="font-size:.95rem;margin:0">“😀” is <b>1</b> visible character, <b>2</b> UTF-16 units, <b>4</b> UTF-8 bytes and counts as <b>2</b> on X. A post that fits one app can break another — so we show every count. <a href="guide-characters-vs-bytes.html">Learn why →</a></p></div>
+</div>
+</div>
+<div class="stat-strip" style="margin-top:28px;justify-content:space-between">
+<div><b>{{COUNT_ALL}}</b>limits tracked</div><div><b>9</b>free text tools</div><div><b>0</b>bytes uploaded</div><div><b>8</b>limit categories</div><div><b>32,766</b>the limit we're named after</div>
+</div>
+</div></section>
+
+<section class="band"><div class="wrap">
+<span class="eyebrow">The toolkit</span>
+<h2>Nine tools for every kind of limit</h2>
+<div class="grid g3" style="margin-top:22px">
+<a class="card reveal" href="character-counter.html"><span class="tag">Writers · marketers</span><h3>Character counter</h3><p class="muted">Characters with and without spaces, plus any custom limit.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="word-counter.html"><span class="tag">Students · editors</span><h3>Word counter</h3><p class="muted">Words, reading time, readability and keyword density.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="byte-counter.html"><span class="tag">Developers</span><h3>UTF-8 byte counter</h3><p class="muted">Find the multi-byte culprits and trim to 32,766 bytes safely.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="token-counter.html"><span class="tag">AI builders</span><h3>AI token counter</h3><p class="muted">Estimate tokens, context-window fit and API cost.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="text-splitter.html"><span class="tag">RAG · threads · SMS</span><h3>Text splitter</h3><p class="muted">Chunk by characters, bytes, words or tokens, with overlap.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="truncate-text.html"><span class="tag">UX · data</span><h3>Truncate text</h3><p class="muted">Cut to a limit without breaking words or emoji.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="sms-counter.html"><span class="tag">SMS marketers</span><h3>SMS segment counter</h3><p class="muted">GSM-7 vs UCS-2, segments and cost, culprit characters highlighted.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="serp-preview.html"><span class="tag">SEO</span><h3>SERP preview</h3><p class="muted">Pixel-width check for titles and meta descriptions.</p><span class="go">Open →</span></a>
+<a class="card reveal" href="text-cleaner.html"><span class="tag">Everyone</span><h3>Text cleaner &amp; case converter</h3><p class="muted">Fix case, spaces, quotes, emoji, duplicates and slugs.</p><span class="go">Open →</span></a>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<span class="eyebrow">Limits Library</span>
+<h2>{{COUNT_ALL}} limits, one place</h2>
+<p class="lead">Each hub explains how the platform counts, what happens when you go over, and how to write or engineer around it.</p>
+<div style="margin-top:22px">{{CATCARDS}}</div>
+</div></section>
+
+<section class="band"><div class="wrap grid g2" style="align-items:center">
+<div>
+<span class="eyebrow">For businesses</span>
+<h2>Something keeps getting cut off? Get a free Fit Audit.</h2>
+<p class="lead">Send us a site, an ad account export, an SMS campaign or an index mapping. A specialist replies with a prioritized fix list — truncated titles, over-limit ad assets, UCS-2 SMS that cost double, keyword fields that will hit 32,766 bytes, prompts that overflow the context window.</p>
+<ul>
+<li>Free, no obligation, usually within one business day</li>
+<li>Covers SEO, ads, social, SMS and email, search and data, and AI pipelines</li>
+<li>Paid implementation available if you want it done for you</li>
+</ul>
+<p><a class="btn btn-amber" href="free-audit.html">Request my free audit</a> <a class="btn btn-ghost" href="teams.html">See team services</a></p>
+</div>
+<div class="kpis">
+<div class="card"><b>2×</b><span class="muted">Cost of an SMS that slips from GSM-7 to UCS-2 at 70–160 characters</span></div>
+<div class="card"><b>600px</b><span class="muted">Typical desktop title width before search results truncate it</span></div>
+<div class="card"><b>32,766</b><span class="muted">Bytes in Lucene's largest indexable term</span></div>
+<div class="card"><b>30 / 90</b><span class="muted">Google responsive search ad headline / description limits</span></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<span class="eyebrow">Learn</span>
+<h2>Guides that explain the “why”</h2>
+<div class="grid g3" style="margin-top:22px">
+<a class="card reveal" href="guide-fix-elasticsearch-immense-term.html"><span class="tag">Search engineering</span><h3>Fix “immense term … max length 32766”</h3><p class="muted">Five fixes, from ignore_above to hashing.</p></a>
+<a class="card reveal" href="guide-characters-vs-bytes.html"><span class="tag">Unicode</span><h3>Characters vs bytes vs code units</h3><p class="muted">Why 😀 is 1, 2 or 4 depending on who counts.</p></a>
+<a class="card reveal" href="guide-ai-tokens-context-windows.html"><span class="tag">AI</span><h3>AI tokens &amp; context windows</h3><p class="muted">Budgeting prompts, outputs and RAG chunks.</p></a>
+<a class="card reveal" href="guide-meta-title-description-length.html"><span class="tag">SEO</span><h3>Title &amp; meta description length</h3><p class="muted">Pixels beat characters — here's the playbook.</p></a>
+<a class="card reveal" href="guide-sms-segments.html"><span class="tag">SMS</span><h3>How SMS segments are billed</h3><p class="muted">160, 153, 70, 67 — and the emoji trap.</p></a>
+<a class="card reveal" href="guide-write-to-fit.html"><span class="tag">Copywriting</span><h3>12 ways to write to fit</h3><p class="muted">Cut 20% without losing meaning.</p></a>
+</div>
+<p style="margin-top:18px"><a href="guides.html">All guides →</a></p>
+</div></section>
+
+<section class="band"><div class="wrap">
+<span class="eyebrow">Watch</span>
+<h2>Short lessons on how computers count text</h2>
+<div class="grid g3" style="margin-top:22px">
+{{VIDEO:MijmeoH9LT4|Characters, Symbols and the Unicode Miracle — Computerphile}}
+{{VIDEO:zduSFxRajkE|Let's build the GPT Tokenizer — Andrej Karpathy}}
+{{VIDEO:44MGSfUt_bo|Understanding SMS character limits and message parts}}
+</div>
+<p style="margin-top:16px"><a href="videos.html">More videos →</a></p>
+</div></section>
+
+<section><div class="wrap grid g3">
+<a class="card" href="challenge.html"><span class="tag">Monthly contest</span><h3>The 160 Challenge</h3><p class="muted">Write the best piece in exactly 160 characters. Judged on craft; a prize every round.</p><span class="go">Enter →</span></a>
+<a class="card" href="support.html"><span class="tag">Keep it free</span><h3>Support the lab</h3><p class="muted">Donations fund new tools, prize pools, promotion and hiring contributors.</p><span class="go">Support →</span></a>
+<a class="card" href="careers.html"><span class="tag">Join us</span><h3>Careers &amp; talent</h3><p class="muted">Writers, developers, researchers and creators — paid and volunteer roles.</p><span class="go">Apply →</span></a>
+</div></section>
+
+<section class="band"><div class="wrap narrow">
+<h2>Frequently asked questions</h2>
+<details><summary>Is my text uploaded anywhere?</summary><p>No. Every count runs in your browser with JavaScript. Text is kept only in your browser tab's session storage so it survives a refresh, and it disappears when you close the tab.</p></details>
+<details><summary>Why is the site called 32766?</summary><p>32,766 bytes is the largest single term Apache Lucene can index — the limit behind Elasticsearch's “immense term” error. It's one of software's most famous hard limits, and a good reminder that every system counts text somewhere. <a href="the-32766-limit.html">Full story</a>.</p></details>
+<details><summary>Which count should I trust — characters, bytes or tokens?</summary><p>The one the destination uses. Social apps mostly count visible characters (X uses a weighted count), databases and APIs count bytes, JavaScript and Excel count UTF-16 units, and AI models count tokens. The checker uses the right method for each limit automatically.</p></details>
+<details><summary>Are the AI token counts exact?</summary><p>They're estimates (typically within ±15% for English prose). Exact counts depend on each model's tokenizer. Use them for budgeting and leave headroom.</p></details>
+<details><summary>How current are the limits?</summary><p>The library was reviewed in November 2026 and is re-checked regularly. Platforms change limits without notice, so confirm anything business-critical in the official documentation. Spotted a change? <a href="contact.html">Tell us</a>.</p></details>
+</div></section>

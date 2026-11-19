@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fix “Immense Term … Max Length 32766” Errors</title>
+<meta name="description" content="Why Elasticsearch, OpenSearch and Solr reject terms over 32,766 bytes, plus five fixes: ignore_above, text fields, hashing, truncation.">
+<link rel="canonical" href="https://32766.com/guide-fix-elasticsearch-immense-term.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0c0e12">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="32766 — Limits Lab">
+<meta property="og:title" content="Fix “Immense Term … Max Length 32766” Errors">
+<meta property="og:description" content="Why Elasticsearch, OpenSearch and Solr reject terms over 32,766 bytes, plus five fixes: ignore_above, text fields, hashing, truncation.">
+<meta property="og:url" content="https://32766.com/guide-fix-elasticsearch-immense-term.html">
+<meta property="og:image" content="https://32766.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"32766 — Limits Lab","url":"https://32766.com/","description":"Free tools that check whether your text fits: characters, words, UTF-8 bytes and AI tokens against real platform, SEO, SMS, database and AI limits."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Fix the immense term error (max length 32766) in Elasticsearch and OpenSearch","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}</script>
+</head>
+<body data-group="guides">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar" role="note"><a href="https://web.works/contact" target="_blank" rel="noopener">Contact, if you are interested in this website/domain name/Sponsorship/Advertisement/Partnership</a></div>
+<header class="site"><div class="wrap nav">
+<a class="logo" href="index.html" aria-label="32766 Limits Lab home"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<nav aria-label="Main"><ul class="menu" id="menu"><li><a href="tools.html" data-group="tools">Tools</a></li><li><a href="limits.html" data-group="limits">Limits Library</a></li><li><a href="guides.html" data-group="guides">Guides</a></li><li><a href="the-32766-limit.html">Why 32766</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html" data-group="community">Challenge</a></li><li><a href="support.html" data-group="community">Support</a></li><li><a href="teams.html" data-group="teams">For Teams</a></li><li class="menu-cta"><a href="free-audit.html">Free Fit Audit</a></li></ul></nav>
+<div class="nav-cta"><a class="btn btn-amber btn-sm" href="free-audit.html">Free Fit Audit</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme">◐</button>
+<button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">☰</button></div>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › Immense term error</div>
+<span class="eyebrow">Search engineering</span>
+<h1>Fix “immense term … max length 32766”</h1>
+<p class="lead">The error means one value you're indexing as a single term is larger than 32,766 bytes. Here's why it happens and five ways to fix it, from a one-line mapping change to a proper redesign.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 9-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="keybox"><b>In short</b><ul>
+<li>Lucene caps every indexed term at <b>32,766 bytes</b> of UTF-8.</li>
+<li>A <code>keyword</code> field indexes the <i>whole</i> value as one term, so long strings break it.</li>
+<li><code>ignore_above</code> counts <b>characters</b>, not bytes — set it conservatively.</li>
+<li>Best long-term fix: map long text as <code>text</code>, and index a hash or prefix for exact matching.</li>
+</ul></div>
+<h2>What the error looks like</h2>
+<pre><code>illegal_argument_exception: Document contains at least one immense term in field="body.keyword"
+(whose UTF8 encoding is longer than the max length 32766), all of which were skipped.
+Please correct the analyzer to not produce such terms. The prefix of the first immense term is: '[60, 112, 62, …]...'
+caused_by: max_bytes_length_exceeded_exception: bytes can be at most 32766 in length; got 43053</code></pre>
+<p>The byte list in the message is the start of the offending value in decimal (60 = “&lt;”, 112 = “p”) — handy for finding which document caused it. The “got” number is the value's size in bytes.</p>
+<h2>Why it happens</h2>
+<p>Dynamic mapping turns every new string into a <code>text</code> field with a <code>.keyword</code> sub-field. Dynamic templates usually set <code>ignore_above: 256</code> on that sub-field, but custom mappings, <code>flattened</code> fields, explicit <code>keyword</code> fields, and analyzers that don't split (e.g. the <code>keyword</code> tokenizer with a normalizer) all produce whole-value terms. HTML bodies, base64 attachments, serialized JSON and long log lines are the usual culprits.</p>
+<h2>Fix 1 — Add or lower <code>ignore_above</code></h2>
+<pre><code>PUT my-index/_mapping
+{
+  "properties": {
+    "body": {
+      "type": "text",
+      "fields": { "keyword": { "type": "keyword", "ignore_above": 8191 } }
+    }
+  }
+}</code></pre>
+<p>Values longer than the threshold (in characters) aren't indexed in the keyword sub-field but stay in <code>_source</code>. Because UTF-8 can use up to 4 bytes per character, 32,766 ÷ 4 = 8,191 characters is the threshold that is always byte-safe. Elastic's documentation notes that some newer columnar index modes keep values instead of dropping them, so <code>ignore_above</code> no longer protects you there — check the docs for your version and index mode.</p>
+<h2>Fix 2 — Don't use <code>keyword</code> for long text</h2>
+<p>If nobody sorts, aggregates or filters on the exact full value, drop the keyword sub-field and keep only <code>text</code>. Analyzed text is split into many small terms and never hits the limit (unless an analyzer emits a giant token — add a <code>length</code> or <code>truncate</code> token filter as a guard).</p>
+<h2>Fix 3 — Index a hash for exact matching</h2>
+<p>Need to deduplicate or look up by exact value? Store a fixed-size fingerprint (SHA-256 is 64 hex characters) in a <code>keyword</code> field and query that. You can compute it in your application or with an ingest pipeline:</p>
+<pre><code>PUT _ingest/pipeline/fingerprint-body
+{ "processors": [ { "fingerprint": { "fields": ["body"], "target_field": "body_hash", "method": "SHA-256" } } ] }</code></pre>
+<h2>Fix 4 — Truncate safely before indexing</h2>
+<p>If a prefix is good enough (e.g. sorting by the first 200 characters), truncate in the application or with a <code>script</code> processor. Truncate by bytes without splitting a character — our <a href="truncate-text.html">truncator</a> and <a href="byte-counter.html">byte counter</a> show how, and the <a href="text-splitter.html">splitter</a>'s Lucene preset chunks values into 32,766-byte pieces.</p>
+<h2>Fix 5 — Use a binary or non-indexed field</h2>
+<p>For attachments and blobs you never search, use <code>"type": "binary"</code> or set <code>"index": false</code> (and often <code>"doc_values": false</code>) so the value is stored but never turned into a term.</p>
+<h2>Prevent it next time</h2>
+<ul><li>Validate byte length at ingestion: <code>len(value.encode('utf-8')) &lt;= 32766</code>.</li><li>Use explicit mappings or dynamic templates for long-text fields.</li><li>Alert on bulk-response item errors instead of ignoring partial failures.</li><li>Remember Solr has the same limit for <code>StrField</code> values.</li></ul>
+<div class="callout"><b>Fighting this across a large cluster?</b> Our search engineers review mappings and ingest flows for free and send a fix plan. <a href="free-audit.html?need=search">Request a free search audit →</a></div>
+<h3>Watch: keyword vs text fields</h3>
+<div><div class="vid" data-yt="WINwAR2QugM"><button type="button" aria-label="Play video: Elasticsearch keyword vs text field types">Elasticsearch keyword vs text field types</button></div></div>
+<h3>Related</h3>
+<p><a href="the-32766-limit.html">What is 32766?</a> · <a href="guide-characters-vs-bytes.html">Characters vs bytes</a> · <a href="limits-databases-search.html">Database &amp; search limits</a></p>
+</div></section>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="foot-grid">
+<div><a class="logo" href="index.html"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<p class="muted" style="margin-top:12px">Free, private, in-browser tools that tell you whether your text fits — characters, words, bytes and AI tokens checked against 160 real-world limits. Stay one byte under the limit.</p>
+<form class="js-form inline-form" data-subject="Newsletter: The Limit Log" data-ok="You're in. The Limit Log arrives when platforms change their limits — no spam.">
+<input type="email" name="email" required placeholder="you@email.com" aria-label="Email for The Limit Log newsletter"><input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="list" value="The Limit Log"><button class="btn btn-amber btn-sm" type="submit">Get The Limit Log</button><div class="form-msg" role="status"></div></form></div>
+<div><h4>Tools</h4><ul><li><a href="character-counter.html">Character counter</a></li><li><a href="word-counter.html">Word counter</a></li><li><a href="byte-counter.html">UTF-8 byte counter</a></li><li><a href="token-counter.html">AI token counter</a></li><li><a href="text-splitter.html">Text splitter</a></li><li><a href="truncate-text.html">Truncate text</a></li><li><a href="sms-counter.html">SMS counter</a></li><li><a href="serp-preview.html">SERP preview</a></li><li><a href="text-cleaner.html">Text cleaner</a></li></ul></div>
+<div><h4>Limits</h4><ul><li><a href="limits.html">Limits Library</a></li><li><a href="limits-social-media.html">Social media</a></li><li><a href="limits-seo.html">SEO &amp; search snippets</a></li><li><a href="limits-ads.html">Advertising copy</a></li><li><a href="limits-email-sms-messaging.html">Email, SMS &amp; messaging</a></li><li><a href="limits-databases-search.html">Databases &amp; search engines</a></li><li><a href="limits-ai-models.html">AI &amp; LLM tokens</a></li><li><a href="limits-spreadsheets-files-systems.html">Spreadsheets, files &amp; systems</a></li><li><a href="limits-usernames-urls-domains.html">Usernames, URLs &amp; domains</a></li><li><a href="cheat-sheet.html">Printable cheat sheet</a></li></ul></div>
+<div><h4>Learn &amp; join</h4><ul><li><a href="guides.html">All guides</a></li><li><a href="the-32766-limit.html">Why 32766?</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html">160 Challenge</a></li><li><a href="support.html">Support the lab</a></li><li><a href="careers.html">Careers &amp; talent</a></li><li><a href="advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="teams.html">For teams</a></li><li><a href="free-audit.html">Free Fit Audit</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="editorial-policy.html">Editorial policy</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="cookies.html">Cookies</a></li><li><a href="disclaimer.html">Disclaimer</a></li><li><a href="trademark.html">Trademark &amp; ©</a></li></ul></div>
+</div>
+<div class="legal">
+<p><b>Trademark &amp; copyright disclosure:</b> “32766” is used on this site only as a domain-name identifier and as a reference to a widely documented numeric limit (read “327 66”). No claim of exclusive rights is made to the number 32766 or 32767, and this site is not affiliated with, endorsed by or sponsored by the Apache Software Foundation, Elastic, OpenSearch, Microsoft, Google, Meta, X, LinkedIn, TikTok, OpenAI, Anthropic, the U.S. Postal Service or any company, product, place or person that uses these numbers. All product names, logos and trademarks belong to their respective owners and are used for identification only. <a href="trademark.html">Full disclosure</a>.</p>
+<p>Informational tools and content — limits are reviewed regularly but platforms change them; confirm critical limits in official documentation. Some pages show advertising served by Google AdSense. © <span class="year">2026</span> 32766.com. Original text, tools, data compilation and design © 32766.com.</p>
+</div></div></footer>
+<div class="mcta"><a class="btn btn-ghost" href="tools.html">Tools</a><a class="btn btn-amber" href="free-audit.html">Free audit</a></div>
+<aside class="nudge" id="nudge" aria-label="Free audit offer" hidden><button class="nudge-x" aria-label="Close" data-nudge-close>×</button><b>Hitting a limit you can't see?</b><p>Get a free Fit Audit of your titles, ads, SMS or search index — a human-written fix list, usually within one business day.</p><a class="btn btn-amber btn-sm btn-block" href="free-audit.html">Get my free audit</a></aside>
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice"><p style="margin:0">We use essential storage and, with your consent, cookies from Google to show and measure ads. Your text never leaves your browser. See our <a href="cookies.html">Cookie Policy</a>.</p>
+<div class="acts"><button class="btn btn-amber btn-sm" data-cookie="all">Accept</button><button class="btn btn-ghost btn-sm" data-cookie="essential">Essential only</button></div></div>
+<script src="assets/js/main.js" defer></script>
+</body></html>

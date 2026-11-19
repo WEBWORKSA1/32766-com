@@ -1,0 +1,59 @@
+<!--
+title: Fix “Immense Term … Max Length 32766” Errors
+description: Why Elasticsearch, OpenSearch and Solr reject terms over 32,766 bytes, plus five fixes: ignore_above, text fields, hashing, truncation.
+group: guides
+priority: 0.9
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"TechArticle","headline":"Fix the immense term error (max length 32766) in Elasticsearch and OpenSearch","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › Immense term error</div>
+<span class="eyebrow">Search engineering</span>
+<h1>Fix “immense term … max length 32766”</h1>
+<p class="lead">The error means one value you're indexing as a single term is larger than 32,766 bytes. Here's why it happens and five ways to fix it, from a one-line mapping change to a proper redesign.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 9-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="keybox"><b>In short</b><ul>
+<li>Lucene caps every indexed term at <b>32,766 bytes</b> of UTF-8.</li>
+<li>A <code>keyword</code> field indexes the <i>whole</i> value as one term, so long strings break it.</li>
+<li><code>ignore_above</code> counts <b>characters</b>, not bytes — set it conservatively.</li>
+<li>Best long-term fix: map long text as <code>text</code>, and index a hash or prefix for exact matching.</li>
+</ul></div>
+<h2>What the error looks like</h2>
+<pre><code>illegal_argument_exception: Document contains at least one immense term in field="body.keyword"
+(whose UTF8 encoding is longer than the max length 32766), all of which were skipped.
+Please correct the analyzer to not produce such terms. The prefix of the first immense term is: '[60, 112, 62, …]...'
+caused_by: max_bytes_length_exceeded_exception: bytes can be at most 32766 in length; got 43053</code></pre>
+<p>The byte list in the message is the start of the offending value in decimal (60 = “&lt;”, 112 = “p”) — handy for finding which document caused it. The “got” number is the value's size in bytes.</p>
+<h2>Why it happens</h2>
+<p>Dynamic mapping turns every new string into a <code>text</code> field with a <code>.keyword</code> sub-field. Dynamic templates usually set <code>ignore_above: 256</code> on that sub-field, but custom mappings, <code>flattened</code> fields, explicit <code>keyword</code> fields, and analyzers that don't split (e.g. the <code>keyword</code> tokenizer with a normalizer) all produce whole-value terms. HTML bodies, base64 attachments, serialized JSON and long log lines are the usual culprits.</p>
+<h2>Fix 1 — Add or lower <code>ignore_above</code></h2>
+<pre><code>PUT my-index/_mapping
+{
+  "properties": {
+    "body": {
+      "type": "text",
+      "fields": { "keyword": { "type": "keyword", "ignore_above": 8191 } }
+    }
+  }
+}</code></pre>
+<p>Values longer than the threshold (in characters) aren't indexed in the keyword sub-field but stay in <code>_source</code>. Because UTF-8 can use up to 4 bytes per character, 32,766 ÷ 4 = 8,191 characters is the threshold that is always byte-safe. Elastic's documentation notes that some newer columnar index modes keep values instead of dropping them, so <code>ignore_above</code> no longer protects you there — check the docs for your version and index mode.</p>
+<h2>Fix 2 — Don't use <code>keyword</code> for long text</h2>
+<p>If nobody sorts, aggregates or filters on the exact full value, drop the keyword sub-field and keep only <code>text</code>. Analyzed text is split into many small terms and never hits the limit (unless an analyzer emits a giant token — add a <code>length</code> or <code>truncate</code> token filter as a guard).</p>
+<h2>Fix 3 — Index a hash for exact matching</h2>
+<p>Need to deduplicate or look up by exact value? Store a fixed-size fingerprint (SHA-256 is 64 hex characters) in a <code>keyword</code> field and query that. You can compute it in your application or with an ingest pipeline:</p>
+<pre><code>PUT _ingest/pipeline/fingerprint-body
+{ "processors": [ { "fingerprint": { "fields": ["body"], "target_field": "body_hash", "method": "SHA-256" } } ] }</code></pre>
+<h2>Fix 4 — Truncate safely before indexing</h2>
+<p>If a prefix is good enough (e.g. sorting by the first 200 characters), truncate in the application or with a <code>script</code> processor. Truncate by bytes without splitting a character — our <a href="truncate-text.html">truncator</a> and <a href="byte-counter.html">byte counter</a> show how, and the <a href="text-splitter.html">splitter</a>'s Lucene preset chunks values into 32,766-byte pieces.</p>
+<h2>Fix 5 — Use a binary or non-indexed field</h2>
+<p>For attachments and blobs you never search, use <code>"type": "binary"</code> or set <code>"index": false</code> (and often <code>"doc_values": false</code>) so the value is stored but never turned into a term.</p>
+<h2>Prevent it next time</h2>
+<ul><li>Validate byte length at ingestion: <code>len(value.encode('utf-8')) &lt;= 32766</code>.</li><li>Use explicit mappings or dynamic templates for long-text fields.</li><li>Alert on bulk-response item errors instead of ignoring partial failures.</li><li>Remember Solr has the same limit for <code>StrField</code> values.</li></ul>
+<div class="callout"><b>Fighting this across a large cluster?</b> Our search engineers review mappings and ingest flows for free and send a fix plan. <a href="free-audit.html?need=search">Request a free search audit →</a></div>
+<h3>Watch: keyword vs text fields</h3>
+{{VIDEO:WINwAR2QugM|Elasticsearch keyword vs text field types}}
+<h3>Related</h3>
+<p><a href="the-32766-limit.html">What is 32766?</a> · <a href="guide-characters-vs-bytes.html">Characters vs bytes</a> · <a href="limits-databases-search.html">Database &amp; search limits</a></p>
+</div></section>

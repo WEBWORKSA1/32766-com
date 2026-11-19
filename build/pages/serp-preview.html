@@ -1,0 +1,38 @@
+<!--
+title: SERP Preview — Title & Meta Pixel-Width Checker
+description: See how titles and meta descriptions may appear in search results on desktop and mobile, measured in pixels with live truncation.
+scripts: tools
+group: tools
+priority: 0.8
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"SERP Preview and Pixel Width Checker","url":"https://32766.com/serp-preview.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › SERP preview</div>
+<h1>SERP preview &amp; pixel-width checker</h1>
+<p class="lead">Search results truncate titles and descriptions by <b>pixel width</b>, not character count. Measure yours the same way and see the cut before you publish.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="card">
+<div class="field"><label for="sTitle">Title tag</label><input type="text" id="sTitle" value="UTF-8 Byte Counter — Check the 32,766-Byte Lucene Limit &amp; Database Sizes"></div>
+<div class="meter" id="tMeter"><i></i></div><p class="mono" style="font-size:.85rem;display:flex;justify-content:space-between;gap:8px"><span id="tPx"></span><span id="tVerdict"></span></p>
+<div class="field"><label for="sUrl">URL</label><input type="url" id="sUrl" value="https://32766.com/byte-counter.html"></div>
+<div class="field"><label for="sDesc">Meta description</label><textarea id="sDesc" style="min-height:110px">Count UTF-8, UTF-16 and UTF-32 bytes, find the multi-byte characters inflating your size, and trim safely to Lucene's 32,766-byte term limit, VARCHAR, S3 key or cookie limits.</textarea></div>
+<div class="meter" id="dMeter"><i></i></div><p class="mono" style="font-size:.85rem;display:flex;justify-content:space-between;gap:8px"><span id="dPx"></span><span id="dVerdict"></span></p>
+<div class="fixcta" id="fixcta" style="margin:12px 0 0"><b>Titles getting cut across your site?</b> <a href="free-audit.html?need=seo">Get a free title &amp; meta audit</a> — we'll flag every truncated page.</div>
+</div>
+<div>
+<p class="lbl">Desktop preview</p>
+<div class="serp"><div class="u"></div><div class="t"></div><div class="d"></div></div>
+<p class="lbl" style="margin-top:18px">Mobile preview</p>
+<div class="serp mobile"><div class="u"></div><div class="t"></div><div class="d"></div></div>
+<p class="muted" style="font-size:.84rem;margin-top:12px">Approximate. Previews use Arial 20px (titles) and 14px (descriptions). Search engines may rewrite titles and snippets, add dates or site names, and change layouts at any time.</p>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>Why pixels, not characters</h2>
+<p>A title of 60 “i” characters is much narrower than 60 “W” characters. Search results allot a fixed width — commonly measured at about 600 pixels for desktop titles and about 920 pixels for desktop descriptions — so two titles of identical length can truncate differently. This tool renders your text in the same typeface at the same size in a hidden canvas and measures it.</p>
+<h3>A practical title formula</h3>
+<ol><li>Put the primary keyword and the promise in the first ~40 characters.</li><li>Use a separator (— or |) before your brand, or drop the brand on long titles.</li><li>Prefer narrow words where you have a choice (“tips” over “WORKFLOWS”); avoid all caps.</li><li>Keep each title unique across the site.</li></ol>
+<h3>Meta descriptions</h3>
+<p>Search engines often rewrite descriptions to match the query, but a good one still gets used for its target queries. Aim for 140–158 characters, lead with the benefit, and include a concrete detail (a number, a time, a format). Full playbook: <a href="guide-meta-title-description-length.html">title and meta description length</a>.</p>
+</div></section>

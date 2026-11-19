@@ -1,0 +1,31 @@
+<!--
+title: Spreadsheet, File & System Limits | 32766
+description: Excel's 32,767 characters per cell and 1,048,576 rows, Google Sheets, Windows and Linux path limits, Kubernetes NodePorts, QR capacity.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What happens if I paste more than 32,767 characters into an Excel cell?", "acceptedAnswer": {"@type": "Answer", "text": "Excel truncates it to 32,767 characters. Libraries writing .xlsx files may throw an error or produce a file Excel reports as damaged."}}, {"@type": "Question", "name": "Why does 32,767 appear so often?", "acceptedAnswer": {"@type": "Answer", "text": "It's the largest value of a signed 16-bit integer, a common size for length fields in older formats and APIs."}}, {"@type": "Question", "name": "What is the default Kubernetes NodePort range?", "acceptedAnswer": {"@type": "Answer", "text": "30000–32767, which gives 2,768 ports."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › Spreadsheets, files & systems</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>Spreadsheets, files & systems</h1>
+<div class="lead"><p>Many system limits cluster around powers of two, and 32,767 (2<sup>15</sup>−1, the largest signed 16-bit integer) shows up again and again: Excel's per-cell character limit, Windows' extended path length, Oracle's extended VARCHAR2 and the top of Kubernetes' default NodePort range. Its neighbor 32,766 is Lucene's term limit — and this site's name.</p></div>
+<p><a class="btn btn-amber" href="character-counter.html">Count characters</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:systems}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>Excel and Google Sheets</h2><p>An Excel cell holds 32,767 characters, counted like <code>LEN()</code> (UTF-16 units, so emoji count as 2). Exports that exceed it — common with JSON, logs and long descriptions — produce corrupted or truncated files. Split long values with the <a href="text-splitter.html">text splitter</a>'s Excel preset. Google Sheets allows 50,000 characters per cell and 10 million cells per spreadsheet.</p>
+<h2>Paths and file names</h2><p>Classic Windows paths stop at 260 characters unless long-path support is enabled; most file systems cap a single name at 255 (Linux ext4 counts bytes, so 255 bytes of UTF-8).</p>
+<h2>FAQ</h2><details><summary>What happens if I paste more than 32,767 characters into an Excel cell?</summary><p>Excel truncates it to 32,767 characters. Libraries writing .xlsx files may throw an error or produce a file Excel reports as damaged.</p></details><details><summary>Why does 32,767 appear so often?</summary><p>It's the largest value of a signed 16-bit integer, a common size for length fields in older formats and APIs.</p></details><details><summary>What is the default Kubernetes NodePort range?</summary><p>30000–32767, which gives 2,768 ports.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-social-media.html">Social media</a> · <a href="limits-seo.html">SEO & search snippets</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-email-sms-messaging.html">Email, SMS & messaging</a> · <a href="limits-databases-search.html">Databases & search engines</a> · <a href="limits-ai-models.html">AI & LLM tokens</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=search">Get my free audit</a></div>
+</div>
+</div></section>

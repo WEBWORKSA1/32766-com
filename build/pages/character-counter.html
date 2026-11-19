@@ -1,0 +1,43 @@
+<!--
+title: Character Counter — With & Without Spaces | 32766
+description: Free live character counter: characters with and without spaces, words, bytes and tokens, a custom limit, and instant checks against platform limits.
+scripts: tools
+group: tools
+priority: 0.9
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"Character Counter","url":"https://32766.com/character-counter.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › Character counter</div>
+<h1>Character counter</h1>
+<p class="lead">Count characters with and without spaces as you type, set your own limit, and see instantly which platforms your text fits.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div>{{CHECKER}}
+<div class="card" style="margin-top:18px"><h3>Custom limit</h3>
+<div class="row2"><div class="field"><label for="customLimit">Limit</label><input type="number" id="customLimit" min="1" value="280"></div>
+<div class="field"><label for="customMethod">Counted as</label><select id="customMethod"><option value="g">Visible characters</option><option value="u16">UTF-16 units</option><option value="b">UTF-8 bytes</option><option value="w">Words</option><option value="tok">AI tokens (estimate)</option></select></div></div>
+<div class="meter" id="customMeter"><i></i></div><p class="mono" id="customOut" style="margin:.6rem 0 0">Set a limit</p></div>
+<div class="card" style="margin-top:18px"><h3>More counts</h3>
+<div class="counts" style="border:1px solid var(--line);border-radius:10px">
+<div><b data-k="letters">0</b><span>Letters</span></div><div><b data-k="digits">0</b><span>Digits</span></div><div><b data-k="spaces">0</b><span>Whitespace</span></div><div><b data-k="emoji">0</b><span>Emoji</span></div>
+<div><b data-k="codepoints">0</b><span>Code points</span></div><div><b data-k="utf16">0</b><span>UTF-16 units</span></div><div><b data-k="lines">0</b><span>Lines</span></div><div><b data-k="paragraphs">0</b><span>Paragraphs</span></div>
+</div></div>
+</div>
+<div>{{LIMIT_LIST}}</div>
+</div></section>
+<section><div class="wrap article">
+<h2>How this character counter counts</h2>
+<p>Most people mean <b>visible characters</b> when they say “characters”: each letter, digit, space, punctuation mark or emoji you can see counts once. This tool counts those using your browser's grapheme segmentation, so a family emoji like 👨‍👩‍👧 (five code points joined together) counts as one character — the way you perceive it.</p>
+<p>Not every system agrees. X counts most emoji and CJK characters as two. LinkedIn and many schedulers count UTF-16 code units, where an emoji is also two. Databases and APIs often limit <b>bytes</b>, and in UTF-8 an emoji takes four. That's why the panel above shows several counts, and why the “Where does it fit?” list uses the right method for each platform.</p>
+<h3>Characters with vs. without spaces</h3>
+<p>“Characters without spaces” removes every whitespace character — spaces, tabs and line breaks. Some translation agencies, academic journals and form fields use it. Social platforms count spaces.</p>
+<h3>Line breaks count too</h3>
+<p>A line break is a character. On Windows-origin text a break can be two (carriage return + line feed). If a field is tight, the text cleaner can remove extra breaks and spaces.</p>
+<h2>Common character limits</h2>
+{{TABLE:social:compact}}
+<p style="margin-top:12px"><a href="limits.html">See all {{COUNT_ALL}} limits →</a></p>
+<h2>FAQ</h2>
+<details><summary>Do emoji count as one character?</summary><p>Visually, yes, and this counter shows them as one. On X an emoji counts as 2, in UTF-16 systems (LinkedIn, JavaScript, Excel) usually 2, and in UTF-8 bytes typically 4. See <a href="guide-characters-vs-bytes.html">characters vs bytes</a>.</p></details>
+<details><summary>Does a URL count against my X limit?</summary><p>Every link counts as 23 characters on X regardless of its real length, because X wraps it with its link shortener. The X weighted count above applies that rule.</p></details>
+<details><summary>Can I count characters in Excel or Google Sheets?</summary><p>Use <code>=LEN(A1)</code>. It counts UTF-16 units, so emoji count as 2. Excel cells hold up to 32,767 characters; Google Sheets cells up to 50,000.</p></details>
+</div></section>

@@ -1,0 +1,52 @@
+<!--
+title: Characters vs Bytes vs Code Units | 32766
+description: Graphemes, code points, UTF-16 units and UTF-8 bytes in plain English — why 😀 counts as 1, 2 or 4, and which count each system uses.
+group: guides
+priority: 0.8
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"Article","headline":"Characters vs bytes vs code units","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › Characters vs bytes</div>
+<span class="eyebrow">Unicode, explained</span>
+<h1>Characters vs bytes vs code units</h1>
+<p class="lead">“How long is this text?” has at least four correct answers. Knowing which one a system uses is the difference between a post that fits and one that's rejected.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 7-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="tbl-wrap"><table><thead><tr><th>Text</th><th style="text-align:right">Visible chars</th><th style="text-align:right">Code points</th><th style="text-align:right">UTF-16 units</th><th style="text-align:right">UTF-8 bytes</th></tr></thead><tbody>
+<tr><td>A</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">1</td></tr>
+<tr><td>é</td><td class="n">1</td><td class="n">1 or 2</td><td class="n">1 or 2</td><td class="n">2 or 3</td></tr>
+<tr><td>€</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">3</td></tr>
+<tr><td>中</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">3</td></tr>
+<tr><td>😀</td><td class="n">1</td><td class="n">1</td><td class="n">2</td><td class="n">4</td></tr>
+<tr><td>👍🏽</td><td class="n">1</td><td class="n">2</td><td class="n">4</td><td class="n">8</td></tr>
+<tr><td>👩‍💻</td><td class="n">1</td><td class="n">3</td><td class="n">5</td><td class="n">11</td></tr>
+<tr><td>🇨🇦</td><td class="n">1</td><td class="n">2</td><td class="n">4</td><td class="n">8</td></tr>
+</tbody></table></div>
+<p class="muted" style="font-size:.88rem">“é” can be stored as one precomposed code point or as “e” plus a combining accent — same look, different length.</p>
+<h2>The four lengths</h2>
+<h3>1. Visible characters (grapheme clusters)</h3><p>What a human counts. A flag, a skin-toned thumbs-up or a family emoji is one grapheme even though it's built from several code points. Bluesky counts graphemes; so does our <a href="character-counter.html">character counter</a>.</p>
+<h3>2. Code points</h3><p>Unicode assigns every character a number (U+0041 is “A”, U+1F600 is 😀). Python's <code>len()</code> counts code points. Combining marks and emoji modifiers are separate code points.</p>
+<h3>3. UTF-16 code units</h3><p>JavaScript (<code>"😀".length === 2</code>), Java, C#, Windows and Excel count 16-bit units. Characters beyond U+FFFF — most emoji — take two units (a “surrogate pair”). That's why LinkedIn and many web forms count an emoji as 2.</p>
+<h3>4. UTF-8 bytes</h3><p>The web's dominant encoding uses 1 to 4 bytes per code point. Databases, file systems, network protocols and search engines usually limit bytes: Lucene's 32,766, S3 object keys' 1,024, DNS, cookies, push payloads. Measure with the <a href="byte-counter.html">byte counter</a>.</p>
+<h2>Then there are special counts</h2>
+<ul><li><b>X</b> weighs characters: most Latin text counts 1, while CJK and emoji count 2, and every URL is 23.</li><li><b>SMS</b> uses a 7-bit alphabet; leaving it switches the whole message to UCS-2 (<a href="guide-sms-segments.html">details</a>).</li><li><b>Google Ads</b> counts double-width (CJK) characters as 2.</li><li><b>AI models</b> count tokens (<a href="guide-ai-tokens-context-windows.html">details</a>).</li></ul>
+<h2>How to count correctly in code</h2>
+<pre><code>// JavaScript
+[...new Intl.Segmenter(undefined, {granularity: 'grapheme'}).segment(s)].length // graphemes
+[...s].length                                                                 // code points
+s.length                                                                      // UTF-16 units
+new TextEncoder().encode(s).length                                            // UTF-8 bytes
+
+# Python
+len(s)                    # code points
+len(s.encode('utf-8'))    # UTF-8 bytes
+len(s.encode('utf-16-le')) // 2   # UTF-16 units
+# graphemes: use the third-party "regex" module:  len(regex.findall(r'\X', s))</code></pre>
+<h2>Rules that prevent bugs</h2>
+<ol><li>Validate with the same unit the destination enforces.</li><li>Normalize to NFC before counting and storing, so “é” is always one code point.</li><li>Truncate on grapheme boundaries for anything a person reads.</li><li>Size database columns and indexes in bytes, assuming up to 4 per character.</li></ol>
+<h3>Watch</h3>
+<div class="grid g2">{{VIDEO:MijmeoH9LT4|Characters, Symbols and the Unicode Miracle — Computerphile}}{{VIDEO:qBex3IDaUbU|UTF-8 “nearly” works — Computerphile extra}}</div>
+<h3>Related</h3><p><a href="byte-counter.html">Byte counter</a> · <a href="guide-database-column-sizing.html">Sizing columns for multilingual text</a> · <a href="limits.html">Limits Library</a></p>
+</div></section>

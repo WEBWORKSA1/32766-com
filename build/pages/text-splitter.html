@@ -1,0 +1,48 @@
+<!--
+title: Text Splitter — Chunk by Chars, Bytes or Tokens
+description: Split text into X threads, SMS parts, 32,766-byte values, Excel cells or 512-token RAG chunks with overlap. Export TXT or JSONL.
+scripts: tools
+group: tools
+priority: 0.8
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"Text Splitter and Chunker","url":"https://32766.com/text-splitter.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › Text splitter</div>
+<h1>Text splitter &amp; chunker</h1>
+<p class="lead">Break long text into pieces that each fit a limit — by characters, UTF-8 bytes, words or AI tokens, on word boundaries, with optional overlap and numbering.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="tool">
+<div class="tool-head"><span class="t">SPLITTER · private, in-browser</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="sample">Sample</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="spTxt" class="sr">Text to split</label>
+<textarea id="spTxt" placeholder="Paste a long article, transcript, thread draft or document…"></textarea>
+<div class="tool-body">
+<p class="lbl">Presets</p>
+<div class="tabs"><button data-preset="x">X thread (280)</button><button data-preset="xpremium">X Premium (25,000)</button><button data-preset="linkedin">LinkedIn (3,000)</button><button data-preset="sms">SMS segments (153)</button><button data-preset="rag">RAG 512 tok / 64 overlap</button><button data-preset="rag1k">RAG 1,000 tok / 150</button><button data-preset="lucene">Lucene 32,766 B</button><button data-preset="excel">Excel cell 32,767</button></div>
+<div class="row2">
+<div class="field"><label for="spMode">Measure by</label><select id="spMode"><option value="chars">Characters</option><option value="bytes">UTF-8 bytes</option><option value="words">Words</option><option value="tokens">AI tokens (estimate)</option></select></div>
+<div class="field"><label for="spSize">Max per chunk</label><input type="number" id="spSize" value="280" min="1"></div>
+<div class="field"><label for="spOverlap">Overlap (same unit)</label><input type="number" id="spOverlap" value="0" min="0"></div>
+<div class="field" style="padding-top:26px"><label class="check"><input type="checkbox" id="spBound" checked> Keep words whole</label><label class="check"><input type="checkbox" id="spNum"> Add “1/n” numbering</label></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><b id="spCount" class="mono">0 chunks</b><span style="flex:1"></span><button class="btn btn-ghost btn-sm" id="spCopyAll" type="button">Copy all</button><button class="btn btn-ghost btn-sm" id="spDlTxt" type="button">Download .txt</button><button class="btn btn-amber btn-sm" id="spDlJson" type="button">Download .jsonl</button></div>
+</div>
+</div>
+<div><div class="card"><h3>Chunks</h3><div id="spOut" style="max-height:640px;overflow:auto"></div></div></div>
+</div></section>
+<section><div class="wrap article">
+<h2>What people split text for</h2>
+<ul>
+<li><b>Threads.</b> Turn a long post into a numbered X, Threads or Bluesky thread. Numbering reserves room for “ 12/34” so each part still fits.</li>
+<li><b>SMS.</b> Plan multipart messages at 153 GSM-7 characters per segment, or send separate messages.</li>
+<li><b>Search indexes.</b> Keep values under Lucene's 32,766-byte term limit by chunking in UTF-8 bytes.</li>
+<li><b>Spreadsheets.</b> Fit long text into Excel's 32,767-character cell limit across several cells.</li>
+<li><b>AI retrieval (RAG).</b> Create token-sized chunks with overlap for embeddings. JSONL export includes per-chunk counts.</li>
+</ul>
+<h3>Choosing a chunk size for RAG</h3>
+<p>Smaller chunks (200–500 tokens) retrieve precise facts; larger ones (800–1,500) keep more context but dilute similarity scores. Overlap of 10–20% stops sentences from being orphaned at boundaries. Start at 512 tokens with 64 overlap, measure answer quality on real questions, and adjust. Make sure each chunk fits your embedding model's input limit.</p>
+<p>Tokens here are estimates. If you need exact boundaries for one specific model, leave a 10–15% safety margin.</p>
+<h2>FAQ</h2>
+<details><summary>Does “keep words whole” ever break a word?</summary><p>Only when a single word, URL or base64 blob is longer than the chunk itself. Then it's split by characters, never through the middle of an emoji or accented letter.</p></details>
+<details><summary>Is there a size limit?</summary><p>No upload limit, since nothing is uploaded. Very large documents (several MB) may take a second or two in the browser. The preview shows the first 300 chunks; downloads include them all.</p></details>
+</div></section>

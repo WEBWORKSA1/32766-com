@@ -1,0 +1,48 @@
+<!--
+title: UTF-8 Byte Counter — Check the 32,766-Byte Limit
+description: Count UTF-8, UTF-16 and UTF-32 bytes, spot multi-byte characters and trim safely to Lucene's 32,766-byte term limit or any database limit.
+scripts: tools
+group: tools
+priority: 0.9
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"UTF-8 Byte Counter","url":"https://32766.com/byte-counter.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › UTF-8 byte counter</div>
+<h1>UTF-8 byte counter</h1>
+<p class="lead">Databases, search engines, APIs and file systems limit <b>bytes</b>, not characters. Measure the real size of your string, see which characters are multi-byte, and trim without corrupting a character.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div>{{CHECKER}}
+<div class="card" style="margin-top:18px"><h3>Encodings</h3>
+<div class="counts" style="border:1px solid var(--line);border-radius:10px">
+<div><b data-k="bytes">0</b><span>UTF-8 bytes</span></div><div><b data-k="utf16">0</b><span>UTF-16 units (×2 bytes)</span></div><div><b data-k="utf32">0</b><span>UTF-32 bytes</span></div><div><b data-k="codepoints">0</b><span>Code points</span></div>
+</div>
+<div class="row2" style="margin-top:14px;align-items:end"><div class="field" style="margin:0"><label for="trimTo">Trim to (bytes)</label><input type="number" id="trimTo" value="32766" min="1"></div>
+<div><button class="btn btn-amber btn-block" id="trimBytes" type="button">Trim safely to this many bytes</button></div></div>
+<p class="muted" style="font-size:.85rem;margin:.6rem 0 0">Trimming never splits a character or an emoji sequence, so the result is always valid UTF-8.</p>
+</div>
+<div class="card" style="margin-top:18px"><h3>Multi-byte characters in your text</h3><div id="byteTable"></div></div>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="card" style="margin-top:18px"><h3>UTF-8 sizes at a glance</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Characters</th><th style="text-align:right">Bytes each</th></tr></thead><tbody>
+<tr><td>ASCII: A–Z, 0–9, basic punctuation</td><td class="n">1</td></tr>
+<tr><td>Accented Latin, Greek, Cyrillic, Hebrew, Arabic</td><td class="n">2</td></tr>
+<tr><td>Most CJK, Hindi, Thai, €, “smart quotes”, —</td><td class="n">3</td></tr>
+<tr><td>Emoji, rare CJK, historic scripts</td><td class="n">4</td></tr>
+<tr><td>Emoji sequences (skin tones, families, flags)</td><td class="n">8–35</td></tr>
+</tbody></table></div></div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>Why bytes matter more than characters</h2>
+<p>A field that holds “1,000 characters” of English may hold only 333 characters of Japanese, and far fewer emoji. Storage engines, network protocols and indexes allocate by bytes, so a limit written in bytes behaves very differently across languages. When a value goes over, you get errors like Lucene's <code>bytes can be at most 32766 in length</code>, PostgreSQL's <code>index row size exceeds btree maximum</code>, or silently truncated data.</p>
+<h3>The 32,766-byte line</h3>
+<p>Apache Lucene, the library inside Elasticsearch, OpenSearch and Solr, refuses any single indexed term longer than 32,766 bytes. A <code>keyword</code> field stores the whole value as one term, so a long description or a base64 blob mapped as <code>keyword</code> triggers the error. The meter above turns red when your text crosses that line. Fixes are in our <a href="guide-fix-elasticsearch-immense-term.html">step-by-step guide</a>.</p>
+<h3>Byte limits worth knowing</h3>
+{{TABLE:data:compact}}
+<h2>FAQ</h2>
+<details><summary>How many bytes is an emoji?</summary><p>A single emoji is usually 4 bytes in UTF-8. Emoji with skin tones, gender signs or family combinations are several emoji joined with invisible zero-width joiners — 👩🏽‍💻 is 15 bytes.</p></details>
+<details><summary>How do I count bytes in code?</summary><p>JavaScript: <code>new TextEncoder().encode(s).length</code>. Python: <code>len(s.encode('utf-8'))</code>. Java: <code>s.getBytes(StandardCharsets.UTF_8).length</code>. SQL (MySQL): <code>OCTET_LENGTH(col)</code>; PostgreSQL: <code>octet_length(col)</code>.</p></details>
+<details><summary>Is MySQL's utf8 the same as UTF-8?</summary><p>No. MySQL's legacy <code>utf8</code> (utf8mb3) stores at most 3 bytes per character and cannot store emoji. Use <code>utf8mb4</code>, and remember it can use 4 bytes per character when you size columns and indexes.</p></details>
+</div></section>

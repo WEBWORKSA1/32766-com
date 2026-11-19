@@ -1,0 +1,53 @@
+<!--
+title: The 160 Challenge — Monthly 160-Character Contest
+description: Write your best story, pitch or slogan in exactly 160 characters. A free, skill-judged monthly contest with a prize and a winners wall.
+group: community
+priority: 0.7
+-->
+<section class="hero"><div class="wrap grid split">
+<div>
+<span class="eyebrow">Monthly · free to enter · skill-judged</span>
+<h1>The 160 Challenge</h1>
+<p class="lead">One SMS. One idea. Exactly 160 characters — not 159, not 161. Write the most compelling piece you can, and win this month's prize.</p>
+<p class="muted">This round closes in</p>
+<p class="cnt" id="countdown">—</p>
+<div class="grid g3" style="margin-top:18px">
+<div class="card"><b class="cnt" style="font-size:1.5rem">$50</b><p class="muted">Gift card for the monthly winner*</p></div>
+<div class="card"><b class="cnt" style="font-size:1.5rem">Top 10</b><p class="muted">Featured on the winners wall</p></div>
+<div class="card"><b class="cnt" style="font-size:1.5rem">Free</b><p class="muted">No purchase necessary</p></div>
+</div>
+<p class="muted" style="font-size:.84rem">*Prize funded by the 32766 Support Fund and sponsors; the prize for each round is confirmed on this page. Sponsors may add prizes. See the <a href="rules.html">official rules</a>.</p>
+</div>
+<div class="card">
+<h3>Enter this month</h3>
+<p class="muted" style="font-size:.9rem">Theme this round: <b>“A limit that changed everything.”</b> Interpret it however you like — a product pitch, a story, a lesson.</p>
+<form class="js-form" data-subject="160 Challenge entry" data-ok="Entry received! Winners are announced in the first week of next month.">
+<div class="field"><label for="ch-entry">Your entry (exactly 160 characters)</label><textarea id="ch-entry" name="entry" required style="min-height:120px" placeholder="Make every character count…"></textarea><p class="mono" style="font-size:.85rem;margin:.4rem 0 0"><span id="chCount">0</span> / 160</p></div>
+<div class="row2"><div class="field"><label for="ch-name">Name or pen name</label><input type="text" id="ch-name" name="name" required></div><div class="field"><label for="ch-email">Email</label><input type="email" id="ch-email" name="email" required></div></div>
+<div class="field"><label for="ch-country">Country / province or state</label><input type="text" id="ch-country" name="location" required></div>
+<input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<label class="check"><input type="checkbox" name="age_rules" value="18+ and accept rules" required> I'm 18 or older, the entry is my original work, and I accept the <a href="rules.html">official rules</a>.</label>
+<label class="check"><input type="checkbox" name="feature" value="yes"> You may feature my entry and name if it's shortlisted.</label>
+<button class="btn btn-amber btn-block" type="submit">Submit entry</button><div class="form-msg" role="status"></div>
+</form>
+</div>
+</div></section>
+<section class="band"><div class="wrap">
+<h2>How entries are judged</h2>
+<div class="grid g4">
+<div class="card"><h3>Craft — 40%</h3><p class="muted">Word choice, rhythm and economy.</p></div>
+<div class="card"><h3>Impact — 30%</h3><p class="muted">Does it make the reader feel, act or remember?</p></div>
+<div class="card"><h3>Theme — 20%</h3><p class="muted">Fresh, clear interpretation of the round's theme.</p></div>
+<div class="card"><h3>Precision — 10%</h3><p class="muted">Exactly 160 characters, used deliberately.</p></div>
+</div>
+<p class="muted" style="margin-top:16px">Entries are counted in visible characters, like the <a href="character-counter.html">character counter</a>. Emoji count as one.</p>
+</div></section>
+<section><div class="wrap grid g2">
+<div><h2>Winners wall</h2><p class="muted">The first round runs this month. Shortlisted entries will appear here once judging is complete — yours could be first.</p></div>
+<div class="card"><h3>Sponsor a round</h3><p class="muted">Put your brand on a monthly theme, fund a bigger prize and reach writers, marketers and developers.</p><a class="btn btn-amber" href="advertise.html?tier=Contest%20sponsor">Sponsor the 160 Challenge</a> <a class="btn btn-ghost" href="support.html">Donate to the prize pool</a></div>
+</div></section>
+<script>
+(function(){var t=document.getElementById('ch-entry'),c=document.getElementById('chCount');if(!t)return;var seg=null;try{seg=new Intl.Segmenter(undefined,{granularity:'grapheme'})}catch(e){}
+function n(s){if(seg){var k=0;for(var x of seg.segment(s))k++;return k}return Array.from(s).length}
+t.addEventListener('input',function(){var k=n(t.value);c.textContent=k;c.style.color=k===160?'var(--fit)':(k>160?'var(--over)':'');t.setCustomValidity(k===160?'':'Your entry must be exactly 160 characters (currently '+k+').')});})();
+</script>

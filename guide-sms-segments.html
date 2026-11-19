@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How SMS Segments Are Billed — 160, 153, 70, 67</title>
+<meta name="description" content="Why one SMS can bill as two or three: GSM-7 vs UCS-2, multipart headers, extension characters, a worked cost example and a checklist.">
+<link rel="canonical" href="https://32766.com/guide-sms-segments.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0c0e12">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="32766 — Limits Lab">
+<meta property="og:title" content="How SMS Segments Are Billed — 160, 153, 70, 67">
+<meta property="og:description" content="Why one SMS can bill as two or three: GSM-7 vs UCS-2, multipart headers, extension characters, a worked cost example and a checklist.">
+<meta property="og:url" content="https://32766.com/guide-sms-segments.html">
+<meta property="og:image" content="https://32766.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"32766 — Limits Lab","url":"https://32766.com/","description":"Free tools that check whether your text fits: characters, words, UTF-8 bytes and AI tokens against real platform, SEO, SMS, database and AI limits."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How SMS segments are billed","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}</script>
+</head>
+<body data-group="guides">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar" role="note"><a href="https://web.works/contact" target="_blank" rel="noopener">Contact, if you are interested in this website/domain name/Sponsorship/Advertisement/Partnership</a></div>
+<header class="site"><div class="wrap nav">
+<a class="logo" href="index.html" aria-label="32766 Limits Lab home"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<nav aria-label="Main"><ul class="menu" id="menu"><li><a href="tools.html" data-group="tools">Tools</a></li><li><a href="limits.html" data-group="limits">Limits Library</a></li><li><a href="guides.html" data-group="guides">Guides</a></li><li><a href="the-32766-limit.html">Why 32766</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html" data-group="community">Challenge</a></li><li><a href="support.html" data-group="community">Support</a></li><li><a href="teams.html" data-group="teams">For Teams</a></li><li class="menu-cta"><a href="free-audit.html">Free Fit Audit</a></li></ul></nav>
+<div class="nav-cta"><a class="btn btn-amber btn-sm" href="free-audit.html">Free Fit Audit</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme">◐</button>
+<button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">☰</button></div>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › SMS segments</div>
+<span class="eyebrow">SMS marketing</span>
+<h1>How SMS segments are billed</h1>
+<p class="lead">Text messages are billed per segment, and a single character can change how many segments you send. Here are the numbers that matter.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 6-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="tbl-wrap"><table><thead><tr><th>Encoding</th><th style="text-align:right">1 segment</th><th style="text-align:right">2 segments</th><th style="text-align:right">3 segments</th><th style="text-align:right">Each extra</th></tr></thead><tbody>
+<tr><td>GSM-7</td><td class="n">≤160</td><td class="n">≤306</td><td class="n">≤459</td><td class="n">+153</td></tr>
+<tr><td>UCS-2</td><td class="n">≤70</td><td class="n">≤134</td><td class="n">≤201</td><td class="n">+67</td></tr>
+</tbody></table></div>
+<h2>Why 160 and 70?</h2>
+<p>An SMS carries 140 bytes of payload. GSM-7 packs each character into 7 bits: 140 × 8 ÷ 7 = 160 characters. UCS-2 uses 16 bits per character: 140 ÷ 2 = 70. When a message is too long, it's split and each part carries a small User Data Header so phones can reassemble it — leaving 153 GSM-7 or 67 UCS-2 characters per part.</p>
+<h2>The emoji (and smart-quote) trap</h2>
+<p>GSM-7 has English letters, digits, common punctuation and some Western European accents. Emoji, curly quotes (“ ” ‘ ’), en and em dashes (– —), the ellipsis character (…) and most non-Latin scripts aren't in it. One such character switches the <i>entire</i> message to UCS-2.</p>
+<div class="callout"><b>Worked example:</b> a 140-character promo is 1 GSM-7 segment. Add “🎉” and it becomes 142 UCS-2 units (the emoji counts as 2) → 3 segments. Sent to 25,000 subscribers at $0.008 per segment, that's $600 instead of $200.</div>
+<h2>Extension characters count double</h2>
+<p>In GSM-7, these characters need an escape code and count as 2: <code>^ { } \ [ ] ~ | €</code>. A message of 155 regular characters plus two “€” is 159 — still one segment, but close.</p>
+<h2>Checklist for one-segment messages</h2>
+<ol><li>Draft in plain text, not a word processor.</li><li>Run the text through the <a href="sms-counter.html">SMS counter</a> and fix highlighted characters.</li><li>Shorten links with a branded short domain.</li><li>Keep required compliance text (e.g. opt-out wording) in the budget.</li><li>Use emoji only where they justify the 2–3× cost.</li></ol>
+<h3>Watch</h3>
+<div><div class="vid" data-yt="44MGSfUt_bo"><button type="button" aria-label="Play video: Understanding SMS character limits and message parts (standard + Unicode)">Understanding SMS character limits and message parts (standard + Unicode)</button></div></div>
+<div class="callout"><b>Sending at scale?</b> Get a free audit of your SMS templates — encoding, length and wording. <a href="free-audit.html?need=messaging">Request it →</a></div>
+</div></section>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="foot-grid">
+<div><a class="logo" href="index.html"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<p class="muted" style="margin-top:12px">Free, private, in-browser tools that tell you whether your text fits — characters, words, bytes and AI tokens checked against 160 real-world limits. Stay one byte under the limit.</p>
+<form class="js-form inline-form" data-subject="Newsletter: The Limit Log" data-ok="You're in. The Limit Log arrives when platforms change their limits — no spam.">
+<input type="email" name="email" required placeholder="you@email.com" aria-label="Email for The Limit Log newsletter"><input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="list" value="The Limit Log"><button class="btn btn-amber btn-sm" type="submit">Get The Limit Log</button><div class="form-msg" role="status"></div></form></div>
+<div><h4>Tools</h4><ul><li><a href="character-counter.html">Character counter</a></li><li><a href="word-counter.html">Word counter</a></li><li><a href="byte-counter.html">UTF-8 byte counter</a></li><li><a href="token-counter.html">AI token counter</a></li><li><a href="text-splitter.html">Text splitter</a></li><li><a href="truncate-text.html">Truncate text</a></li><li><a href="sms-counter.html">SMS counter</a></li><li><a href="serp-preview.html">SERP preview</a></li><li><a href="text-cleaner.html">Text cleaner</a></li></ul></div>
+<div><h4>Limits</h4><ul><li><a href="limits.html">Limits Library</a></li><li><a href="limits-social-media.html">Social media</a></li><li><a href="limits-seo.html">SEO &amp; search snippets</a></li><li><a href="limits-ads.html">Advertising copy</a></li><li><a href="limits-email-sms-messaging.html">Email, SMS &amp; messaging</a></li><li><a href="limits-databases-search.html">Databases &amp; search engines</a></li><li><a href="limits-ai-models.html">AI &amp; LLM tokens</a></li><li><a href="limits-spreadsheets-files-systems.html">Spreadsheets, files &amp; systems</a></li><li><a href="limits-usernames-urls-domains.html">Usernames, URLs &amp; domains</a></li><li><a href="cheat-sheet.html">Printable cheat sheet</a></li></ul></div>
+<div><h4>Learn &amp; join</h4><ul><li><a href="guides.html">All guides</a></li><li><a href="the-32766-limit.html">Why 32766?</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html">160 Challenge</a></li><li><a href="support.html">Support the lab</a></li><li><a href="careers.html">Careers &amp; talent</a></li><li><a href="advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="teams.html">For teams</a></li><li><a href="free-audit.html">Free Fit Audit</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="editorial-policy.html">Editorial policy</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="cookies.html">Cookies</a></li><li><a href="disclaimer.html">Disclaimer</a></li><li><a href="trademark.html">Trademark &amp; ©</a></li></ul></div>
+</div>
+<div class="legal">
+<p><b>Trademark &amp; copyright disclosure:</b> “32766” is used on this site only as a domain-name identifier and as a reference to a widely documented numeric limit (read “327 66”). No claim of exclusive rights is made to the number 32766 or 32767, and this site is not affiliated with, endorsed by or sponsored by the Apache Software Foundation, Elastic, OpenSearch, Microsoft, Google, Meta, X, LinkedIn, TikTok, OpenAI, Anthropic, the U.S. Postal Service or any company, product, place or person that uses these numbers. All product names, logos and trademarks belong to their respective owners and are used for identification only. <a href="trademark.html">Full disclosure</a>.</p>
+<p>Informational tools and content — limits are reviewed regularly but platforms change them; confirm critical limits in official documentation. Some pages show advertising served by Google AdSense. © <span class="year">2026</span> 32766.com. Original text, tools, data compilation and design © 32766.com.</p>
+</div></div></footer>
+<div class="mcta"><a class="btn btn-ghost" href="tools.html">Tools</a><a class="btn btn-amber" href="free-audit.html">Free audit</a></div>
+<aside class="nudge" id="nudge" aria-label="Free audit offer" hidden><button class="nudge-x" aria-label="Close" data-nudge-close>×</button><b>Hitting a limit you can't see?</b><p>Get a free Fit Audit of your titles, ads, SMS or search index — a human-written fix list, usually within one business day.</p><a class="btn btn-amber btn-sm btn-block" href="free-audit.html">Get my free audit</a></aside>
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice"><p style="margin:0">We use essential storage and, with your consent, cookies from Google to show and measure ads. Your text never leaves your browser. See our <a href="cookies.html">Cookie Policy</a>.</p>
+<div class="acts"><button class="btn btn-amber btn-sm" data-cookie="all">Accept</button><button class="btn btn-ghost btn-sm" data-cookie="essential">Essential only</button></div></div>
+<script src="assets/js/main.js" defer></script>
+</body></html>

@@ -1,0 +1,70 @@
+<!--
+title: What Is 32766? The 32,766-Byte Lucene Limit
+description: 32766 explained: Lucene's 32,766-byte term limit behind the Elasticsearch error, its neighbor 32,767, Kubernetes NodePorts and ZIP 32766.
+priority: 0.9
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"Article","headline":"What is 32766? The 32,766-byte limit and other meanings","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"},"mainEntityOfPage":"https://32766.com/the-32766-limit.html"}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › Why 32766</div>
+<span class="eyebrow">The number behind the name</span>
+<h1>What is 32766?</h1>
+<p class="lead">To most people it's just a five-digit number. To anyone who has run a search cluster, it's a wall: <b>32,766 bytes</b> is the longest single term Apache Lucene will index.</p>
+<p class="meta-line">By the 32766.com editorial team · Updated November 19, 2026 · 8-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="keybox"><b>Key facts</b><ul>
+<li><b>32,766 bytes</b> — maximum length of one indexed term in Apache Lucene, and so in Elasticsearch, OpenSearch and Solr.</li>
+<li><b>32,766 = 2<sup>15</sup> − 2</b> = 0x7FFE in hexadecimal = 111111111111110 in binary.</li>
+<li><b>32,767 = 2<sup>15</sup> − 1</b>, the largest signed 16-bit integer: Excel's characters-per-cell limit, Windows' extended path length and the top of Kubernetes' NodePort range.</li>
+<li><b>ZIP code 32766</b> serves Oviedo (alias Chuluota) in Seminole County, Florida.</li>
+</ul></div>
+<div class="toc"><b>Contents</b><ol><li><a href="#lucene">The Lucene term limit</a></li><li><a href="#why">Why 32,766 and not 32,768?</a></li><li><a href="#neighbors">32,767 and its neighbors</a></li><li><a href="#maths">The maths of 32766</a></li><li><a href="#place">ZIP code 32766</a></li><li><a href="#business">Why limits matter for business</a></li></ol></div>
+
+<h2 id="lucene">1. The Lucene term limit</h2>
+<p>Lucene breaks text into <i>terms</i> and stores each term in an inverted index. When a value is indexed as a single exact term — an Elasticsearch <code>keyword</code> field, a <code>not_analyzed</code> string in older versions, a <code>flattened</code> field, or any token an analyzer produces — that term must be at most 32,766 bytes of UTF-8. Anything longer is rejected with errors such as:</p>
+<pre><code>Document contains at least one immense term in field="description"
+(whose UTF8 encoding is longer than the max length 32766), all of which were skipped.
+max_bytes_length_exceeded_exception: bytes can be at most 32766 in length; got 51000</code></pre>
+<p>The limit is in <b>bytes</b>, not characters. Elasticsearch's <code>ignore_above</code> mapping option, often recommended as the fix, counts <b>characters</b> — so a value of 10,000 emoji (40,000 bytes) can slip past an <code>ignore_above: 10000</code> guard and still fail. Elastic's current documentation also notes that in newer columnar index modes <code>ignore_above</code> no longer shields you from the byte limit. The complete set of fixes is in our guide to <a href="guide-fix-elasticsearch-immense-term.html">fixing the immense-term error</a>, and you can test any value with the <a href="byte-counter.html">byte counter</a>.</p>
+
+<h2 id="why">2. Why 32,766 and not 32,768?</h2>
+<p>Lucene's indexing chain writes terms into in-memory byte blocks of 32,768 bytes (2<sup>15</sup>) and prefixes each term with a length marker of up to 2 bytes. The longest term that fits in one block is therefore 32,768 − 2 = <b>32,766 bytes</b> — exposed in the code as the maximum term length. The practical lesson is broader than the internals: a limit sits wherever the implementation draws it, frequently a power of two minus a little. Never assume “about 32 KB” — measure exact bytes.</p>
+
+<h2 id="neighbors">3. 32,767 and its neighbors</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Where</th><th style="text-align:right">Number</th><th>What it limits</th></tr></thead><tbody>
+<tr><td>Apache Lucene</td><td class="n">32,766</td><td>Bytes in a single indexed term</td></tr>
+<tr><td>Signed 16-bit integer</td><td class="n">32,767</td><td>Largest value of <code>short</code> / <code>int16</code></td></tr>
+<tr><td>Microsoft Excel</td><td class="n">32,767</td><td>Characters in one cell</td></tr>
+<tr><td>Windows</td><td class="n">32,767</td><td>Characters in an extended path and in a CreateProcess command line</td></tr>
+<tr><td>Oracle Database</td><td class="n">32,767</td><td>Bytes in VARCHAR2 with MAX_STRING_SIZE=EXTENDED and in PL/SQL</td></tr>
+<tr><td>Kubernetes</td><td class="n">30,000–32,767</td><td>Default NodePort range (2,768 ports)</td></tr>
+<tr><td>Linux (classic default)</td><td class="n">32,768</td><td><code>pid_max</code>, so the highest PID was 32,767</td></tr>
+<tr><td>Minecraft (Bukkit servers)</td><td class="n">32,766</td><td>Plugin-message payload maximum discussed by server developers</td></tr>
+</tbody></table></div>
+
+<h2 id="maths">4. The maths of 32766</h2>
+<ul>
+<li>Even and composite: 32,766 = 2 × 3 × 43 × 127.</li>
+<li>It has 16 divisors and is abundant — its proper divisors add up to more than itself.</li>
+<li>Binary 111111111111110 (fourteen 1s then a 0); hexadecimal 7FFE; octal 77776.</li>
+<li>log<sub>2</sub>(32,766) ≈ 14.9999 — a hair under 15 bits.</li>
+<li>Read aloud as a domain: “three-two-seven, six-six”.</li>
+</ul>
+
+<h2 id="place">5. ZIP code 32766</h2>
+<p>In the United States, 32766 is a postal ZIP code for Oviedo, Florida, with Chuluota as its city alias, in Seminole County east of Orlando. Census-based profiles put its population around 16,000 and its median household income well above the national median. This website is not affiliated with the U.S. Postal Service or any local government or business.</p>
+
+<h2 id="business">6. Why limits matter for business</h2>
+<p>Every channel a business uses has a limit somewhere — a 30-character ad headline, a 160-character SMS, a 600-pixel search title, a 32,766-byte index term, a model's context window. Hitting one silently costs money: truncated messages, rejected ads, double-billed texts, failed indexing jobs, AI answers that ignore half the prompt. 32766.com exists to make those limits visible before they cost you.</p>
+<div class="callout"><b>Check something now:</b> <a href="index.html#checker">Fit Checker</a> · <a href="byte-counter.html">Byte counter</a> · <a href="limits.html">Limits Library</a> · <a href="free-audit.html">Free Fit Audit</a></div>
+
+<h3>Sources and further reading</h3>
+<ul style="font-size:.92rem">
+<li>Elastic documentation — <i>ignore_above</i> mapping parameter (Lucene's term byte-length limit of 32,766).</li>
+<li>Elastic community forums — “immense term” and “bytes can be at most 32766” threads.</li>
+<li>Microsoft — Excel specifications and limits (32,767 characters per cell).</li>
+<li>Kubernetes documentation — service-node-port-range default 30000–32767.</li>
+<li>U.S. Census ACS-based ZIP profiles for 32766 (Oviedo, FL).</li>
+</ul>
+</div></section>

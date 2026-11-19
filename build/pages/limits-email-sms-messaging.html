@@ -1,0 +1,32 @@
+<!--
+title: Email, SMS & Messaging Limits | 32766
+description: SMS 160/70 characters (153/67 per part), email address and subject guidance, Gmail clipping, WhatsApp templates, Telegram and push payloads.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why did my 100-character SMS count as 2 messages?", "acceptedAnswer": {"@type": "Answer", "text": "It contains a character outside GSM-7 (often a smart quote, dash or emoji), which switches it to UCS-2 with a 70-character single-message limit."}}, {"@type": "Question", "name": "What is the ideal email subject length?", "acceptedAnswer": {"@type": "Answer", "text": "Short enough that the key words show on mobile — roughly 30–50 characters — while staying under about 60."}}, {"@type": "Question", "name": "How do I stop Gmail clipping my newsletter?", "acceptedAnswer": {"@type": "Answer", "text": "Keep the HTML under ~102 KB: minify code, host images, and remove unused styles."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › Email, SMS & messaging</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>Email, SMS & messaging limits</h1>
+<div class="lead"><p>Messaging limits decide what your customer actually sees — and what you pay. SMS is billed per segment, and one emoji can triple a message's segment count. Email has hard protocol limits (addresses, line length) and soft limits that cost you attention (subject lines cut off in mobile inboxes) or content (Gmail clips large HTML emails).</p></div>
+<p><a class="btn btn-amber" href="sms-counter.html">Count SMS segments</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:messaging}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>SMS in one paragraph</h2><p>Plain messages use GSM-7: 160 characters, or 153 per segment when split. Any character outside GSM-7 switches the whole message to UCS-2: 70 characters, or 67 per segment. Our <a href="guide-sms-segments.html">SMS guide</a> explains the maths and the traps.</p>
+<h2>Email</h2><ul><li>Addresses: 254 characters total, 64 before the @.</li><li>Subject lines: ~60 characters show on desktop, 30–40 on phones — front-load the point.</li><li>Gmail clips messages whose HTML exceeds roughly 102 KB, hiding your footer and unsubscribe link.</li></ul>
+<h2>Push notifications</h2><p>APNs and Firebase Cloud Messaging payloads are capped at 4 KB (4,096 bytes), including JSON keys — measure with the <a href="byte-counter.html">byte counter</a>.</p>
+<h2>FAQ</h2><details><summary>Why did my 100-character SMS count as 2 messages?</summary><p>It contains a character outside GSM-7 (often a smart quote, dash or emoji), which switches it to UCS-2 with a 70-character single-message limit.</p></details><details><summary>What is the ideal email subject length?</summary><p>Short enough that the key words show on mobile — roughly 30–50 characters — while staying under about 60.</p></details><details><summary>How do I stop Gmail clipping my newsletter?</summary><p>Keep the HTML under ~102 KB: minify code, host images, and remove unused styles.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-social-media.html">Social media</a> · <a href="limits-seo.html">SEO & search snippets</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-databases-search.html">Databases & search engines</a> · <a href="limits-ai-models.html">AI & LLM tokens</a> · <a href="limits-spreadsheets-files-systems.html">Spreadsheets, files & systems</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=messaging">Get my free audit</a></div>
+</div>
+</div></section>

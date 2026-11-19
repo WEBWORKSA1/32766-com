@@ -1,0 +1,68 @@
+<!--
+title: AI Token Counter — Tokens, Context & Cost
+description: Estimate tokens for any prompt, check fit in a 32K–2M context window after reserving output, and price it per call. Free and private.
+scripts: tools
+group: tools
+priority: 0.9
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"AI Token Counter","url":"https://32766.com/token-counter.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › AI token counter</div>
+<h1>AI token counter</h1>
+<p class="lead">Estimate how many tokens a prompt, document or chat history uses, check it against a context window after reserving room for the answer, and price it.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="tool">
+<div class="tool-head"><span class="t">TOKEN ESTIMATOR · private, in-browser</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="sample">Sample</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="tokTxt" class="sr">Prompt or document</label>
+<textarea id="tokTxt" placeholder="Paste a prompt, system message, document or chat history…"></textarea>
+<div class="counts">
+<div><b id="tkTokens">0</b><span>Estimated tokens</span></div>
+<div><b><span id="tkLow">0</span>–<span id="tkHigh">0</span></b><span>Likely range (±15%)</span></div>
+<div><b id="tkChars">0</b><span>Characters</span></div>
+<div><b id="tkWords">0</b><span>Words</span></div>
+</div>
+<div class="tool-body">
+<div class="row2">
+<div class="field"><label for="ctxSel">Context window</label><select id="ctxSel"><option value="8192">8K (8,192)</option><option value="32768">32K (32,768)</option><option value="128000" selected>128K (128,000)</option><option value="200000">200K (200,000)</option><option value="400000">400K (400,000)</option><option value="1000000">1M (1,000,000)</option><option value="2000000">2M (2,000,000)</option><option value="-1">Custom…</option></select></div>
+<div class="field" id="ctxCustomWrap" hidden><label for="ctxCustom">Custom window (tokens)</label><input type="number" id="ctxCustom" value="64000" min="1"></div>
+<div class="field"><label for="reserve">Reserve for the answer (tokens)</label><input type="number" id="reserve" value="4000" min="0"></div>
+</div>
+<div class="row" style="display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.92rem;margin-bottom:6px"><span>Uses <b id="tkUse">—</b> of the space left</span><span id="tkLeft">—</span></div>
+<div class="meter" id="tkMeter"><i></i></div>
+<p class="muted" style="font-size:.85rem;margin:.5rem 0 0">Characters per token in your text: <b id="tkRatio" class="mono">—</b> (English prose is usually ≈4).</p>
+<hr style="margin:18px 0">
+<div class="row2">
+<div class="field"><label for="priceIn">Input price ($ per 1M tokens)</label><input type="number" id="priceIn" step="0.01" min="0" placeholder="e.g. 3.00"></div>
+<div class="field"><label for="priceOut">Output price ($ per 1M tokens)</label><input type="number" id="priceOut" step="0.01" min="0" placeholder="e.g. 15.00"></div>
+</div>
+<div class="field"><label for="calls">Number of calls</label><input type="number" id="calls" value="1" min="1"></div>
+<p class="mono" id="tkCost">Enter your model’s price per 1M tokens</p>
+<p class="muted" style="font-size:.82rem">Prices change often and differ by provider, model and tier — paste the current numbers from your provider's pricing page.</p>
+</div>
+<div class="fixcta" id="fixcta"><b>Doesn't fit?</b> Split it with the <a href="text-splitter.html">token-aware chunker</a>, or <a href="free-audit.html?need=ai">get a free plan for your RAG or prompt pipeline</a>.</div>
+</div>
+<div>
+<div class="card"><h3>Token rules of thumb</h3>
+<ul style="margin:0;padding-left:1.1rem">
+<li>1 token ≈ 4 characters of English ≈ ¾ of a word</li>
+<li>100 tokens ≈ 75 words; 1,000 words ≈ 1,300–1,400 tokens</li>
+<li>Code, JSON, numbers and URLs use more tokens per character</li>
+<li>Chinese, Japanese and Korean often use ≈1 token per character or more</li>
+<li>The context window holds the prompt <i>and</i> the answer</li>
+</ul></div>
+<div class="card" style="margin-top:18px"><h3>Context window tiers</h3>
+{{TABLE:ai:compact}}
+<p class="muted" style="font-size:.82rem;margin:.6rem 0 0">Providers change windows and output caps frequently. Check the model card before you rely on a number.</p></div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>How the estimate works</h2>
+<p>Language models read text as tokens — word pieces from a fixed vocabulary. Every provider uses its own tokenizer, so the same paragraph can be 100 tokens on one model and 115 on another. This tool blends a character-based estimate (characters ÷ 4) with a word-based one (≈1.33 tokens per word, plus punctuation) and counts CJK characters individually. For ordinary English it typically lands within ±15% of real tokenizers. It's built for budgeting, not billing.</p>
+<h3>Leave headroom</h3>
+<p>Reserve the maximum answer length you'll request, add a margin for system prompts and tool definitions, and don't plan to fill the window. Many models get less reliable at recalling details deep in very long contexts, so retrieval (sending only the relevant chunks) often beats stuffing everything in. Our <a href="guide-ai-tokens-context-windows.html">tokens and context windows guide</a> covers the details.</p>
+<h2>FAQ</h2>
+<details><summary>Why not an exact count?</summary><p>Exact counts need each model's tokenizer vocabulary (several megabytes each), and some providers don't publish theirs. Your provider's API usually returns exact usage per request — use that for billing.</p></details>
+<details><summary>Does whitespace cost tokens?</summary><p>Yes. Runs of spaces, indentation and blank lines are tokens too. Minifying JSON and trimming whitespace with the <a href="text-cleaner.html">text cleaner</a> can cut prompt size noticeably.</p></details>
+<details><summary>What chunk size should I use for RAG?</summary><p>A common starting point is 300–800 tokens with 10–20% overlap, then tune with real retrieval tests. The <a href="text-splitter.html">text splitter</a> has a 512-token preset.</p></details>
+</div></section>

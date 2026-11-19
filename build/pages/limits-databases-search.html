@@ -1,0 +1,31 @@
+<!--
+title: Database & Search Limits — Lucene, SQL, NoSQL
+description: Byte limits developers hit: Lucene's 32,766-byte term, MySQL rows and keys, PostgreSQL B-tree rows, SQL Server, Oracle, MongoDB, S3.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the Lucene limit 32,766 or 32,767?", "acceptedAnswer": {"@type": "Answer", "text": "32,766 bytes is the maximum term length in Lucene's index writer; error messages say “max length 32766”. 32,767 is the signed 16-bit maximum that sits right next to it."}}, {"@type": "Question", "name": "Does ignore_above protect me from the Lucene limit?", "acceptedAnswer": {"@type": "Answer", "text": "ignore_above counts characters, not bytes. A 10,000-character value of 4-byte emoji is 40,000 bytes, so set it conservatively (e.g. 8,191 or lower) — and note that newer columnar index modes behave differently."}}, {"@type": "Question", "name": "How many characters fit in VARCHAR(255) utf8mb4?", "acceptedAnswer": {"@type": "Answer", "text": "255 characters; MySQL VARCHAR lengths are in characters, but the bytes (up to 1,020) count toward row and index limits."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › Databases & search engines</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>Databases & search engine limits</h1>
+<div class="lead"><p>Data stores limit <b>bytes</b>. In UTF-8 an English letter is 1 byte, an accented letter 2, most Asian scripts 3 and emoji 4 — so a limit that's generous for English can be tight for multilingual data. The most famous of these is the one this site is named after: Apache Lucene's 32,766-byte maximum for a single indexed term.</p></div>
+<p><a class="btn btn-amber" href="byte-counter.html">Measure bytes</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:data}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>The errors you'll see</h2><ul><li><b>Elasticsearch/OpenSearch:</b> <code>Document contains at least one immense term … longer than the max length 32766</code> / <code>bytes can be at most 32766 in length</code>.</li><li><b>PostgreSQL:</b> <code>index row size … exceeds btree version 4 maximum 2704</code>.</li><li><b>MySQL:</b> <code>Specified key was too long; max key length is 3072 bytes</code> or <code>Row size too large</code>.</li><li><b>SQL Server:</b> warnings that an index key exceeds 900 (clustered) or 1,700 (nonclustered) bytes.</li></ul>
+<h2>Patterns that fix most of them</h2><ul><li>Don't index long free text as an exact-match value; index a hash (MD5/SHA-256) or a prefix instead.</li><li>Use full-text fields for long text and keep exact-match fields short.</li><li>Validate byte length at the API boundary, not after a failed write.</li></ul><p>Step-by-step for Lucene: <a href="guide-fix-elasticsearch-immense-term.html">fix the “immense term” error</a>.</p>
+<h2>FAQ</h2><details><summary>Is the Lucene limit 32,766 or 32,767?</summary><p>32,766 bytes is the maximum term length in Lucene's index writer; error messages say “max length 32766”. 32,767 is the signed 16-bit maximum that sits right next to it.</p></details><details><summary>Does ignore_above protect me from the Lucene limit?</summary><p>ignore_above counts characters, not bytes. A 10,000-character value of 4-byte emoji is 40,000 bytes, so set it conservatively (e.g. 8,191 or lower) — and note that newer columnar index modes behave differently.</p></details><details><summary>How many characters fit in VARCHAR(255) utf8mb4?</summary><p>255 characters; MySQL VARCHAR lengths are in characters, but the bytes (up to 1,020) count toward row and index limits.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-social-media.html">Social media</a> · <a href="limits-seo.html">SEO & search snippets</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-email-sms-messaging.html">Email, SMS & messaging</a> · <a href="limits-ai-models.html">AI & LLM tokens</a> · <a href="limits-spreadsheets-files-systems.html">Spreadsheets, files & systems</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=search">Get my free audit</a></div>
+</div>
+</div></section>

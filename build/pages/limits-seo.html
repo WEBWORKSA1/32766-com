@@ -1,0 +1,32 @@
+<!--
+title: SEO Length Limits — Titles, Meta & Sitemaps
+description: ≈600px titles, ≈920px meta descriptions, 2,048-character sitemap URLs, 50,000 URLs per sitemap, 500 KiB robots.txt and alt text guidance.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is there an official meta description length?", "acceptedAnswer": {"@type": "Answer", "text": "No. Snippets are truncated by width and are often rewritten to match the query. 150–160 characters is a practical desktop target."}}, {"@type": "Question", "name": "Do long titles hurt rankings?", "acceptedAnswer": {"@type": "Answer", "text": "A long title isn't a penalty, but the cut-off part won't be seen and search engines may rewrite it. Put what matters first."}}, {"@type": "Question", "name": "How long should a URL slug be?", "acceptedAnswer": {"@type": "Answer", "text": "Short and descriptive. Under about 75 characters keeps URLs readable and shareable."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › SEO & search snippets</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>SEO & search snippet limits</h1>
+<div class="lead"><p>Search engines don't publish a character limit for titles or descriptions — they truncate by <b>pixel width</b>. Character guidelines (50–60 for titles, 150–160 for descriptions) are rules of thumb that hold for typical English text. Technical files such as sitemaps and robots.txt do have documented hard limits.</p></div>
+<p><a class="btn btn-amber" href="serp-preview.html">Preview your snippet</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:seo}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>Titles and descriptions</h2><p>Desktop titles are commonly measured at about 600 pixels before an ellipsis; descriptions at about 920 pixels on desktop and less on mobile. Wide letters (M, W, capitals) eat space faster than narrow ones (i, l, t). Use the <a href="serp-preview.html">SERP preview</a> for an exact pixel measurement.</p>
+<h2>Technical limits</h2><ul><li>Each sitemap file: up to 50,000 URLs and 50 MB uncompressed; use a sitemap index beyond that.</li><li>Sitemap URLs must be under 2,048 characters.</li><li>Google processes the first 500 KiB of a robots.txt file.</li></ul>
+<h2>Tips</h2><ul><li>Lead with the query and the benefit; brand last.</li><li>Write unique titles and descriptions for every indexable page.</li><li>Alt text: describe the image's purpose in a sentence; around 125 characters is a common accessibility guideline.</li></ul>
+<h2>FAQ</h2><details><summary>Is there an official meta description length?</summary><p>No. Snippets are truncated by width and are often rewritten to match the query. 150–160 characters is a practical desktop target.</p></details><details><summary>Do long titles hurt rankings?</summary><p>A long title isn't a penalty, but the cut-off part won't be seen and search engines may rewrite it. Put what matters first.</p></details><details><summary>How long should a URL slug be?</summary><p>Short and descriptive. Under about 75 characters keeps URLs readable and shareable.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-social-media.html">Social media</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-email-sms-messaging.html">Email, SMS & messaging</a> · <a href="limits-databases-search.html">Databases & search engines</a> · <a href="limits-ai-models.html">AI & LLM tokens</a> · <a href="limits-spreadsheets-files-systems.html">Spreadsheets, files & systems</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=seo">Get my free audit</a></div>
+</div>
+</div></section>

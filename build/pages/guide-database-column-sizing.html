@@ -1,0 +1,33 @@
+<!--
+title: Sizing DB Columns for Multilingual Text | 32766
+description: Size VARCHAR columns and indexes in bytes: utf8mb4, MySQL 3,072-byte keys, PostgreSQL 2,704-byte rows, SQL Server and Oracle limits.
+group: guides
+priority: 0.7
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"TechArticle","headline":"Sizing database columns for multilingual text","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › Column sizing</div>
+<span class="eyebrow">Databases</span>
+<h1>Sizing columns for multilingual text</h1>
+<p class="lead">“VARCHAR(255) is enough” is true until a customer writes in Japanese, pastes emoji, or you add an index. Here's how to size text columns in bytes.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 6-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<h2>Know your unit</h2>
+<ul><li><b>MySQL</b> <code>VARCHAR(n)</code> — n is characters, but storage, row size (65,535 bytes shared) and index keys (3,072 bytes for InnoDB DYNAMIC) are bytes. With <code>utf8mb4</code>, assume 4 bytes per character.</li>
+<li><b>PostgreSQL</b> <code>varchar(n)</code> — n is characters; B-tree index entries max out around 2,704 bytes.</li>
+<li><b>SQL Server</b> <code>varchar(n)</code> — n is bytes (≤8,000); <code>nvarchar(n)</code> — byte-pairs (≤4,000). Index keys: 900 bytes clustered, 1,700 nonclustered.</li>
+<li><b>Oracle</b> <code>VARCHAR2(n BYTE|CHAR)</code> — specify CHAR semantics explicitly; the column still can't exceed 4,000 bytes (32,767 with extended strings).</li></ul>
+<h2>A sizing worksheet</h2>
+<ol><li>Decide the maximum <i>visible</i> length you'll accept (e.g. a 120-character display name).</li><li>Multiply by 4 for the worst-case bytes in utf8mb4 (480).</li><li>Check against any index you'll build on the column; use a prefix index or a hash column if it doesn't fit.</li><li>Validate at the API with the same unit — graphemes for UX, bytes for storage.</li></ol>
+<h2>Long text that must be unique</h2>
+<p>Add a generated column with a hash (e.g. SHA-256) and put the unique index on that. It's fixed-size, fast, and avoids every key-length limit — the same trick that fixes Lucene's <a href="guide-fix-elasticsearch-immense-term.html">32,766-byte term error</a>.</p>
+<pre><code>-- MySQL 8
+ALTER TABLE pages ADD url_hash BINARY(32) AS (UNHEX(SHA2(url, 256))) STORED, ADD UNIQUE KEY (url_hash);
+-- PostgreSQL
+CREATE UNIQUE INDEX ON pages (md5(url));</code></pre>
+<h2>Always utf8mb4</h2>
+<p>MySQL's legacy <code>utf8</code> can't store 4-byte characters, so emoji fail or are mangled. Use <code>utf8mb4</code> for the server, database, tables and connection.</p>
+<p><a href="limits-databases-search.html">Database &amp; search limits hub →</a> · <a href="byte-counter.html">Byte counter →</a></p>
+</div></section>

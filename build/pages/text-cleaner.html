@@ -1,0 +1,37 @@
+<!--
+title: Text Cleaner & Case Converter | 32766
+description: Convert case (Sentence, Title, camelCase, snake_case), trim spaces, remove line breaks, emoji and duplicates, straighten quotes, make slugs.
+scripts: tools
+group: tools
+priority: 0.7
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › Text cleaner</div>
+<h1>Text cleaner &amp; case converter</h1>
+<p class="lead">One-click fixes for messy text — usually the fastest way to win back characters before you hit a limit.</p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+<div class="tool">
+<div class="tool-head"><span class="t" id="clStat">0 characters</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" id="clUndo" type="button">Undo</button><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="copy">Copy</button><button class="btn btn-ghost btn-sm" data-act="download">Download</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="clTxt" class="sr">Text to clean</label>
+<textarea id="clTxt" placeholder="Paste text to clean or convert…" style="min-height:260px"></textarea>
+<div class="tool-body">
+<p class="lbl">Case</p>
+<div class="tabs"><button data-op="sentence">Sentence case</button><button data-op="title">Title Case</button><button data-op="upper">UPPERCASE</button><button data-op="lower">lowercase</button><button data-op="camel">camelCase</button><button data-op="snake">snake_case</button><button data-op="kebab">kebab-case</button><button data-op="slug">URL slug</button></div>
+<p class="lbl">Clean up</p>
+<div class="tabs"><button data-op="trim">Trim lines</button><button data-op="spaces">Collapse double spaces</button><button data-op="empty">Remove empty lines</button><button data-op="breaks">Remove line breaks</button><button data-op="quotes">Straighten quotes &amp; dashes</button><button data-op="emoji">Remove emoji</button><button data-op="ascii">Strip accents / non-ASCII</button><button data-op="dedupe">Remove duplicate lines</button><button data-op="sort">Sort lines A–Z</button><button data-op="reverse">Reverse line order</button></div>
+</div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>What each fix does</h2>
+<ul>
+<li><b>Sentence case</b> lowercases everything, then capitalizes the first letter of each sentence. Re-capitalize proper nouns afterward.</li>
+<li><b>Title Case</b> capitalizes major words and keeps short words like “of”, “and” and “the” lowercase (except at the start).</li>
+<li><b>camelCase / snake_case / kebab-case</b> are for variable names, file names and CSS classes.</li>
+<li><b>URL slug</b> produces a lowercase, hyphenated, accent-free slug capped at 75 characters.</li>
+<li><b>Straighten quotes &amp; dashes</b> turns “ ” ‘ ’ – — … into plain ASCII. It saves bytes and keeps SMS in GSM-7.</li>
+<li><b>Strip accents / non-ASCII</b> converts “café” to “cafe” and drops anything outside basic ASCII. Use with care on names.</li>
+</ul>
+<p>Every action can be undone (30 steps). Your text stays in your browser.</p>
+</div></section>

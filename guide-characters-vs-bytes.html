@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Characters vs Bytes vs Code Units | 32766</title>
+<meta name="description" content="Graphemes, code points, UTF-16 units and UTF-8 bytes in plain English — why 😀 counts as 1, 2 or 4, and which count each system uses.">
+<link rel="canonical" href="https://32766.com/guide-characters-vs-bytes.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0c0e12">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="32766 — Limits Lab">
+<meta property="og:title" content="Characters vs Bytes vs Code Units | 32766">
+<meta property="og:description" content="Graphemes, code points, UTF-16 units and UTF-8 bytes in plain English — why 😀 counts as 1, 2 or 4, and which count each system uses.">
+<meta property="og:url" content="https://32766.com/guide-characters-vs-bytes.html">
+<meta property="og:image" content="https://32766.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"32766 — Limits Lab","url":"https://32766.com/","description":"Free tools that check whether your text fits: characters, words, UTF-8 bytes and AI tokens against real platform, SEO, SMS, database and AI limits."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Characters vs bytes vs code units","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}</script>
+</head>
+<body data-group="guides">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar" role="note"><a href="https://web.works/contact" target="_blank" rel="noopener">Contact, if you are interested in this website/domain name/Sponsorship/Advertisement/Partnership</a></div>
+<header class="site"><div class="wrap nav">
+<a class="logo" href="index.html" aria-label="32766 Limits Lab home"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<nav aria-label="Main"><ul class="menu" id="menu"><li><a href="tools.html" data-group="tools">Tools</a></li><li><a href="limits.html" data-group="limits">Limits Library</a></li><li><a href="guides.html" data-group="guides">Guides</a></li><li><a href="the-32766-limit.html">Why 32766</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html" data-group="community">Challenge</a></li><li><a href="support.html" data-group="community">Support</a></li><li><a href="teams.html" data-group="teams">For Teams</a></li><li class="menu-cta"><a href="free-audit.html">Free Fit Audit</a></li></ul></nav>
+<div class="nav-cta"><a class="btn btn-amber btn-sm" href="free-audit.html">Free Fit Audit</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme">◐</button>
+<button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">☰</button></div>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › Characters vs bytes</div>
+<span class="eyebrow">Unicode, explained</span>
+<h1>Characters vs bytes vs code units</h1>
+<p class="lead">“How long is this text?” has at least four correct answers. Knowing which one a system uses is the difference between a post that fits and one that's rejected.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 7-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="tbl-wrap"><table><thead><tr><th>Text</th><th style="text-align:right">Visible chars</th><th style="text-align:right">Code points</th><th style="text-align:right">UTF-16 units</th><th style="text-align:right">UTF-8 bytes</th></tr></thead><tbody>
+<tr><td>A</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">1</td></tr>
+<tr><td>é</td><td class="n">1</td><td class="n">1 or 2</td><td class="n">1 or 2</td><td class="n">2 or 3</td></tr>
+<tr><td>€</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">3</td></tr>
+<tr><td>中</td><td class="n">1</td><td class="n">1</td><td class="n">1</td><td class="n">3</td></tr>
+<tr><td>😀</td><td class="n">1</td><td class="n">1</td><td class="n">2</td><td class="n">4</td></tr>
+<tr><td>👍🏽</td><td class="n">1</td><td class="n">2</td><td class="n">4</td><td class="n">8</td></tr>
+<tr><td>👩‍💻</td><td class="n">1</td><td class="n">3</td><td class="n">5</td><td class="n">11</td></tr>
+<tr><td>🇨🇦</td><td class="n">1</td><td class="n">2</td><td class="n">4</td><td class="n">8</td></tr>
+</tbody></table></div>
+<p class="muted" style="font-size:.88rem">“é” can be stored as one precomposed code point or as “e” plus a combining accent — same look, different length.</p>
+<h2>The four lengths</h2>
+<h3>1. Visible characters (grapheme clusters)</h3><p>What a human counts. A flag, a skin-toned thumbs-up or a family emoji is one grapheme even though it's built from several code points. Bluesky counts graphemes; so does our <a href="character-counter.html">character counter</a>.</p>
+<h3>2. Code points</h3><p>Unicode assigns every character a number (U+0041 is “A”, U+1F600 is 😀). Python's <code>len()</code> counts code points. Combining marks and emoji modifiers are separate code points.</p>
+<h3>3. UTF-16 code units</h3><p>JavaScript (<code>"😀".length === 2</code>), Java, C#, Windows and Excel count 16-bit units. Characters beyond U+FFFF — most emoji — take two units (a “surrogate pair”). That's why LinkedIn and many web forms count an emoji as 2.</p>
+<h3>4. UTF-8 bytes</h3><p>The web's dominant encoding uses 1 to 4 bytes per code point. Databases, file systems, network protocols and search engines usually limit bytes: Lucene's 32,766, S3 object keys' 1,024, DNS, cookies, push payloads. Measure with the <a href="byte-counter.html">byte counter</a>.</p>
+<h2>Then there are special counts</h2>
+<ul><li><b>X</b> weighs characters: most Latin text counts 1, while CJK and emoji count 2, and every URL is 23.</li><li><b>SMS</b> uses a 7-bit alphabet; leaving it switches the whole message to UCS-2 (<a href="guide-sms-segments.html">details</a>).</li><li><b>Google Ads</b> counts double-width (CJK) characters as 2.</li><li><b>AI models</b> count tokens (<a href="guide-ai-tokens-context-windows.html">details</a>).</li></ul>
+<h2>How to count correctly in code</h2>
+<pre><code>// JavaScript
+[...new Intl.Segmenter(undefined, {granularity: 'grapheme'}).segment(s)].length // graphemes
+[...s].length                                                                 // code points
+s.length                                                                      // UTF-16 units
+new TextEncoder().encode(s).length                                            // UTF-8 bytes
+
+# Python
+len(s)                    # code points
+len(s.encode('utf-8'))    # UTF-8 bytes
+len(s.encode('utf-16-le')) // 2   # UTF-16 units
+# graphemes: use the third-party "regex" module:  len(regex.findall(r'\X', s))</code></pre>
+<h2>Rules that prevent bugs</h2>
+<ol><li>Validate with the same unit the destination enforces.</li><li>Normalize to NFC before counting and storing, so “é” is always one code point.</li><li>Truncate on grapheme boundaries for anything a person reads.</li><li>Size database columns and indexes in bytes, assuming up to 4 per character.</li></ol>
+<h3>Watch</h3>
+<div class="grid g2"><div><div class="vid" data-yt="MijmeoH9LT4"><button type="button" aria-label="Play video: Characters, Symbols and the Unicode Miracle — Computerphile">Characters, Symbols and the Unicode Miracle — Computerphile</button></div></div><div><div class="vid" data-yt="qBex3IDaUbU"><button type="button" aria-label="Play video: UTF-8 “nearly” works — Computerphile extra">UTF-8 “nearly” works — Computerphile extra</button></div></div></div>
+<h3>Related</h3><p><a href="byte-counter.html">Byte counter</a> · <a href="guide-database-column-sizing.html">Sizing columns for multilingual text</a> · <a href="limits.html">Limits Library</a></p>
+</div></section>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="foot-grid">
+<div><a class="logo" href="index.html"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<p class="muted" style="margin-top:12px">Free, private, in-browser tools that tell you whether your text fits — characters, words, bytes and AI tokens checked against 160 real-world limits. Stay one byte under the limit.</p>
+<form class="js-form inline-form" data-subject="Newsletter: The Limit Log" data-ok="You're in. The Limit Log arrives when platforms change their limits — no spam.">
+<input type="email" name="email" required placeholder="you@email.com" aria-label="Email for The Limit Log newsletter"><input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="list" value="The Limit Log"><button class="btn btn-amber btn-sm" type="submit">Get The Limit Log</button><div class="form-msg" role="status"></div></form></div>
+<div><h4>Tools</h4><ul><li><a href="character-counter.html">Character counter</a></li><li><a href="word-counter.html">Word counter</a></li><li><a href="byte-counter.html">UTF-8 byte counter</a></li><li><a href="token-counter.html">AI token counter</a></li><li><a href="text-splitter.html">Text splitter</a></li><li><a href="truncate-text.html">Truncate text</a></li><li><a href="sms-counter.html">SMS counter</a></li><li><a href="serp-preview.html">SERP preview</a></li><li><a href="text-cleaner.html">Text cleaner</a></li></ul></div>
+<div><h4>Limits</h4><ul><li><a href="limits.html">Limits Library</a></li><li><a href="limits-social-media.html">Social media</a></li><li><a href="limits-seo.html">SEO &amp; search snippets</a></li><li><a href="limits-ads.html">Advertising copy</a></li><li><a href="limits-email-sms-messaging.html">Email, SMS &amp; messaging</a></li><li><a href="limits-databases-search.html">Databases &amp; search engines</a></li><li><a href="limits-ai-models.html">AI &amp; LLM tokens</a></li><li><a href="limits-spreadsheets-files-systems.html">Spreadsheets, files &amp; systems</a></li><li><a href="limits-usernames-urls-domains.html">Usernames, URLs &amp; domains</a></li><li><a href="cheat-sheet.html">Printable cheat sheet</a></li></ul></div>
+<div><h4>Learn &amp; join</h4><ul><li><a href="guides.html">All guides</a></li><li><a href="the-32766-limit.html">Why 32766?</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html">160 Challenge</a></li><li><a href="support.html">Support the lab</a></li><li><a href="careers.html">Careers &amp; talent</a></li><li><a href="advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="teams.html">For teams</a></li><li><a href="free-audit.html">Free Fit Audit</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="editorial-policy.html">Editorial policy</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="cookies.html">Cookies</a></li><li><a href="disclaimer.html">Disclaimer</a></li><li><a href="trademark.html">Trademark &amp; ©</a></li></ul></div>
+</div>
+<div class="legal">
+<p><b>Trademark &amp; copyright disclosure:</b> “32766” is used on this site only as a domain-name identifier and as a reference to a widely documented numeric limit (read “327 66”). No claim of exclusive rights is made to the number 32766 or 32767, and this site is not affiliated with, endorsed by or sponsored by the Apache Software Foundation, Elastic, OpenSearch, Microsoft, Google, Meta, X, LinkedIn, TikTok, OpenAI, Anthropic, the U.S. Postal Service or any company, product, place or person that uses these numbers. All product names, logos and trademarks belong to their respective owners and are used for identification only. <a href="trademark.html">Full disclosure</a>.</p>
+<p>Informational tools and content — limits are reviewed regularly but platforms change them; confirm critical limits in official documentation. Some pages show advertising served by Google AdSense. © <span class="year">2026</span> 32766.com. Original text, tools, data compilation and design © 32766.com.</p>
+</div></div></footer>
+<div class="mcta"><a class="btn btn-ghost" href="tools.html">Tools</a><a class="btn btn-amber" href="free-audit.html">Free audit</a></div>
+<aside class="nudge" id="nudge" aria-label="Free audit offer" hidden><button class="nudge-x" aria-label="Close" data-nudge-close>×</button><b>Hitting a limit you can't see?</b><p>Get a free Fit Audit of your titles, ads, SMS or search index — a human-written fix list, usually within one business day.</p><a class="btn btn-amber btn-sm btn-block" href="free-audit.html">Get my free audit</a></aside>
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice"><p style="margin:0">We use essential storage and, with your consent, cookies from Google to show and measure ads. Your text never leaves your browser. See our <a href="cookies.html">Cookie Policy</a>.</p>
+<div class="acts"><button class="btn btn-amber btn-sm" data-cookie="all">Accept</button><button class="btn btn-ghost btn-sm" data-cookie="essential">Essential only</button></div></div>
+<script src="assets/js/main.js" defer></script>
+</body></html>

@@ -1,0 +1,52 @@
+<!--
+title: Word Counter — Reading Time & Readability
+description: Live word counter with reading and speaking time, Flesch readability, sentences, paragraphs and keyword density, plus limit checks.
+scripts: tools
+group: tools
+priority: 0.9
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"Word Counter","url":"https://32766.com/word-counter.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › Word counter</div>
+<h1>Word counter</h1>
+<p class="lead">Words, sentences, reading time, readability and keyword density — live as you type. Built for essays, articles, scripts and anything with a word limit.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div>{{CHECKER}}
+<div class="card" style="margin-top:18px"><h3>Writing stats</h3>
+<div class="counts" style="border:1px solid var(--line);border-radius:10px">
+<div><b data-k="words">0</b><span>Words</span></div><div><b data-k="unique">0</b><span>Unique words</span></div><div><b data-k="paragraphs">0</b><span>Paragraphs</span></div><div><b data-k="pages">0</b><span>Pages (500 words)</span></div>
+<div><b data-k="readMin">0 sec</b><span>Reading (238 wpm)</span></div><div><b data-k="speakMin">0 sec</b><span>Speaking (150 wpm)</span></div><div><b data-k="fre">—</b><span>Flesch reading ease</span></div><div><b data-k="avgWord">0</b><span>Avg. word length</span></div>
+</div></div>
+<div class="card" style="margin-top:18px"><h3>Word limit</h3>
+<div class="row2"><div class="field"><label for="customLimit">Target</label><input type="number" id="customLimit" min="1" value="500"></div>
+<div class="field"><label for="customMethod">Counted as</label><select id="customMethod"><option value="w">Words</option><option value="g">Characters</option><option value="tok">AI tokens (estimate)</option></select></div></div>
+<div class="meter" id="customMeter"><i></i></div><p class="mono" id="customOut" style="margin:.6rem 0 0">Set a limit</p></div>
+</div>
+<div>
+<div class="card"><h3>Keyword density</h3><p class="muted" style="font-size:.88rem">Top terms, excluding common stop words.</p><div id="kwTable"></div></div>
+<div style="margin-top:18px">{{LIMIT_LIST}}</div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>How words are counted</h2>
+<p>A word is any run of letters or digits your browser's language-aware word segmenter recognizes. Hyphenated words (“well-known”) and contractions (“don't”) count as one word in English. For Chinese, Japanese and Thai, which don't put spaces between words, the browser's dictionary-based segmenter splits words for you, so counts are far more accurate than space-splitting tools.</p>
+<h3>Reading and speaking time</h3>
+<p>Reading time uses 238 words per minute, a widely cited average for silent reading of English non-fiction. Speaking time uses 150 words per minute, a comfortable presentation pace. Technical text reads slower; adjust your expectations accordingly.</p>
+<h3>Readability (Flesch reading ease)</h3>
+<p>The Flesch score combines sentence length and syllables per word. Higher means easier: 60–70 is plain English, 30–50 is college-level, under 30 is dense. Syllables are estimated with a heuristic, so treat it as a guide rather than a grade.</p>
+<h2>Typical word limits</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Context</th><th style="text-align:right">Typical length</th><th>Note</th></tr></thead><tbody>
+<tr><td>Common App personal essay</td><td class="n">650 words</td><td><small>US undergraduate admissions maximum</small></td></tr>
+<tr><td>Abstract (academic)</td><td class="n">150–300 words</td><td><small>Check the journal's author guidelines</small></td></tr>
+<tr><td>Blog post</td><td class="n">1,000–2,500 words</td><td><small>Depth matters more than length</small></td></tr>
+<tr><td>Press release</td><td class="n">300–500 words</td><td><small>One page is the convention</small></td></tr>
+<tr><td>Elevator pitch</td><td class="n">~75 words</td><td><small>About 30 seconds spoken</small></td></tr>
+<tr><td>Cover letter</td><td class="n">250–400 words</td><td><small>Fits on one page</small></td></tr>
+</tbody></table></div>
+<p class="muted" style="font-size:.88rem">These are conventions, not rules — always follow the specific brief you were given.</p>
+<h2>FAQ</h2>
+<details><summary>Do numbers count as words?</summary><p>Yes. “2026” and “32,766” each count as one word, like most word processors.</p></details>
+<details><summary>Why does my word processor show a different number?</summary><p>Tools disagree on hyphens, slashes, URLs and em dashes without spaces. Differences are usually under 1%. If an exact count is required for a submission, use the counter the institution specifies.</p></details>
+<details><summary>What is keyword density good for?</summary><p>It shows which terms dominate your text so you can spot repetition. There is no ideal percentage for SEO; write naturally and cover the topic fully.</p></details>
+</div></section>

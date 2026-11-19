@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Token Counter — Tokens, Context &amp; Cost</title>
+<meta name="description" content="Estimate tokens for any prompt, check fit in a 32K–2M context window after reserving output, and price it per call. Free and private.">
+<link rel="canonical" href="https://32766.com/token-counter.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0c0e12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="32766 — Limits Lab">
+<meta property="og:title" content="AI Token Counter — Tokens, Context &amp; Cost">
+<meta property="og:description" content="Estimate tokens for any prompt, check fit in a 32K–2M context window after reserving output, and price it per call. Free and private.">
+<meta property="og:url" content="https://32766.com/token-counter.html">
+<meta property="og:image" content="https://32766.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"32766 — Limits Lab","url":"https://32766.com/","description":"Free tools that check whether your text fits: characters, words, UTF-8 bytes and AI tokens against real platform, SEO, SMS, database and AI limits."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Token Counter","url":"https://32766.com/token-counter.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body data-group="tools">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar" role="note"><a href="https://web.works/contact" target="_blank" rel="noopener">Contact, if you are interested in this website/domain name/Sponsorship/Advertisement/Partnership</a></div>
+<header class="site"><div class="wrap nav">
+<a class="logo" href="index.html" aria-label="32766 Limits Lab home"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<nav aria-label="Main"><ul class="menu" id="menu"><li><a href="tools.html" data-group="tools">Tools</a></li><li><a href="limits.html" data-group="limits">Limits Library</a></li><li><a href="guides.html" data-group="guides">Guides</a></li><li><a href="the-32766-limit.html">Why 32766</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html" data-group="community">Challenge</a></li><li><a href="support.html" data-group="community">Support</a></li><li><a href="teams.html" data-group="teams">For Teams</a></li><li class="menu-cta"><a href="free-audit.html">Free Fit Audit</a></li></ul></nav>
+<div class="nav-cta"><a class="btn btn-amber btn-sm" href="free-audit.html">Free Fit Audit</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme">◐</button>
+<button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">☰</button></div>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › AI token counter</div>
+<h1>AI token counter</h1>
+<p class="lead">Estimate how many tokens a prompt, document or chat history uses, check it against a context window after reserving room for the answer, and price it.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="tool">
+<div class="tool-head"><span class="t">TOKEN ESTIMATOR · private, in-browser</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="sample">Sample</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="tokTxt" class="sr">Prompt or document</label>
+<textarea id="tokTxt" placeholder="Paste a prompt, system message, document or chat history…"></textarea>
+<div class="counts">
+<div><b id="tkTokens">0</b><span>Estimated tokens</span></div>
+<div><b><span id="tkLow">0</span>–<span id="tkHigh">0</span></b><span>Likely range (±15%)</span></div>
+<div><b id="tkChars">0</b><span>Characters</span></div>
+<div><b id="tkWords">0</b><span>Words</span></div>
+</div>
+<div class="tool-body">
+<div class="row2">
+<div class="field"><label for="ctxSel">Context window</label><select id="ctxSel"><option value="8192">8K (8,192)</option><option value="32768">32K (32,768)</option><option value="128000" selected>128K (128,000)</option><option value="200000">200K (200,000)</option><option value="400000">400K (400,000)</option><option value="1000000">1M (1,000,000)</option><option value="2000000">2M (2,000,000)</option><option value="-1">Custom…</option></select></div>
+<div class="field" id="ctxCustomWrap" hidden><label for="ctxCustom">Custom window (tokens)</label><input type="number" id="ctxCustom" value="64000" min="1"></div>
+<div class="field"><label for="reserve">Reserve for the answer (tokens)</label><input type="number" id="reserve" value="4000" min="0"></div>
+</div>
+<div class="row" style="display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.92rem;margin-bottom:6px"><span>Uses <b id="tkUse">—</b> of the space left</span><span id="tkLeft">—</span></div>
+<div class="meter" id="tkMeter"><i></i></div>
+<p class="muted" style="font-size:.85rem;margin:.5rem 0 0">Characters per token in your text: <b id="tkRatio" class="mono">—</b> (English prose is usually ≈4).</p>
+<hr style="margin:18px 0">
+<div class="row2">
+<div class="field"><label for="priceIn">Input price ($ per 1M tokens)</label><input type="number" id="priceIn" step="0.01" min="0" placeholder="e.g. 3.00"></div>
+<div class="field"><label for="priceOut">Output price ($ per 1M tokens)</label><input type="number" id="priceOut" step="0.01" min="0" placeholder="e.g. 15.00"></div>
+</div>
+<div class="field"><label for="calls">Number of calls</label><input type="number" id="calls" value="1" min="1"></div>
+<p class="mono" id="tkCost">Enter your model’s price per 1M tokens</p>
+<p class="muted" style="font-size:.82rem">Prices change often and differ by provider, model and tier — paste the current numbers from your provider's pricing page.</p>
+</div>
+<div class="fixcta" id="fixcta"><b>Doesn't fit?</b> Split it with the <a href="text-splitter.html">token-aware chunker</a>, or <a href="free-audit.html?need=ai">get a free plan for your RAG or prompt pipeline</a>.</div>
+</div>
+<div>
+<div class="card"><h3>Token rules of thumb</h3>
+<ul style="margin:0;padding-left:1.1rem">
+<li>1 token ≈ 4 characters of English ≈ ¾ of a word</li>
+<li>100 tokens ≈ 75 words; 1,000 words ≈ 1,300–1,400 tokens</li>
+<li>Code, JSON, numbers and URLs use more tokens per character</li>
+<li>Chinese, Japanese and Korean often use ≈1 token per character or more</li>
+<li>The context window holds the prompt <i>and</i> the answer</li>
+</ul></div>
+<div class="card" style="margin-top:18px"><h3>Context window tiers</h3>
+<div class="tbl-wrap"><table class="limits-table"><thead><tr><th>Platform</th><th>Field</th><th style="text-align:right">Limit</th></tr></thead><tbody><tr data-cat="ai"><td><b>Rule of thumb (English)</b></td><td>Characters per token</td><td class="n">4 <small>characters</small></td></tr><tr data-cat="ai"><td><b>Context window tier</b></td><td>32K window</td><td class="n">32,768 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Context window tier</b></td><td>128K window</td><td class="n">128,000 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Context window tier</b></td><td>200K window</td><td class="n">200,000 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Context window tier</b></td><td>1M window</td><td class="n">1,000,000 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Context window tier</b></td><td>2M window</td><td class="n">2,000,000 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>RAG chunking</b></td><td>Chunk size — common starting point</td><td class="n">512 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Embedding models</b></td><td>Input — common maximum</td><td class="n">8,192 <small>tokens</small></td></tr><tr data-cat="ai"><td><b>Speech-to-text APIs</b></td><td>Audio upload — common maximum</td><td class="n">26,214,400 <small>bytes</small></td></tr></tbody></table></div>
+<p class="muted" style="font-size:.82rem;margin:.6rem 0 0">Providers change windows and output caps frequently. Check the model card before you rely on a number.</p></div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>How the estimate works</h2>
+<p>Language models read text as tokens — word pieces from a fixed vocabulary. Every provider uses its own tokenizer, so the same paragraph can be 100 tokens on one model and 115 on another. This tool blends a character-based estimate (characters ÷ 4) with a word-based one (≈1.33 tokens per word, plus punctuation) and counts CJK characters individually. For ordinary English it typically lands within ±15% of real tokenizers. It's built for budgeting, not billing.</p>
+<h3>Leave headroom</h3>
+<p>Reserve the maximum answer length you'll request, add a margin for system prompts and tool definitions, and don't plan to fill the window. Many models get less reliable at recalling details deep in very long contexts, so retrieval (sending only the relevant chunks) often beats stuffing everything in. Our <a href="guide-ai-tokens-context-windows.html">tokens and context windows guide</a> covers the details.</p>
+<h2>FAQ</h2>
+<details><summary>Why not an exact count?</summary><p>Exact counts need each model's tokenizer vocabulary (several megabytes each), and some providers don't publish theirs. Your provider's API usually returns exact usage per request — use that for billing.</p></details>
+<details><summary>Does whitespace cost tokens?</summary><p>Yes. Runs of spaces, indentation and blank lines are tokens too. Minifying JSON and trimming whitespace with the <a href="text-cleaner.html">text cleaner</a> can cut prompt size noticeably.</p></details>
+<details><summary>What chunk size should I use for RAG?</summary><p>A common starting point is 300–800 tokens with 10–20% overlap, then tune with real retrieval tests. The <a href="text-splitter.html">text splitter</a> has a 512-token preset.</p></details>
+</div></section>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="foot-grid">
+<div><a class="logo" href="index.html"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<p class="muted" style="margin-top:12px">Free, private, in-browser tools that tell you whether your text fits — characters, words, bytes and AI tokens checked against 160 real-world limits. Stay one byte under the limit.</p>
+<form class="js-form inline-form" data-subject="Newsletter: The Limit Log" data-ok="You're in. The Limit Log arrives when platforms change their limits — no spam.">
+<input type="email" name="email" required placeholder="you@email.com" aria-label="Email for The Limit Log newsletter"><input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="list" value="The Limit Log"><button class="btn btn-amber btn-sm" type="submit">Get The Limit Log</button><div class="form-msg" role="status"></div></form></div>
+<div><h4>Tools</h4><ul><li><a href="character-counter.html">Character counter</a></li><li><a href="word-counter.html">Word counter</a></li><li><a href="byte-counter.html">UTF-8 byte counter</a></li><li><a href="token-counter.html">AI token counter</a></li><li><a href="text-splitter.html">Text splitter</a></li><li><a href="truncate-text.html">Truncate text</a></li><li><a href="sms-counter.html">SMS counter</a></li><li><a href="serp-preview.html">SERP preview</a></li><li><a href="text-cleaner.html">Text cleaner</a></li></ul></div>
+<div><h4>Limits</h4><ul><li><a href="limits.html">Limits Library</a></li><li><a href="limits-social-media.html">Social media</a></li><li><a href="limits-seo.html">SEO &amp; search snippets</a></li><li><a href="limits-ads.html">Advertising copy</a></li><li><a href="limits-email-sms-messaging.html">Email, SMS &amp; messaging</a></li><li><a href="limits-databases-search.html">Databases &amp; search engines</a></li><li><a href="limits-ai-models.html">AI &amp; LLM tokens</a></li><li><a href="limits-spreadsheets-files-systems.html">Spreadsheets, files &amp; systems</a></li><li><a href="limits-usernames-urls-domains.html">Usernames, URLs &amp; domains</a></li><li><a href="cheat-sheet.html">Printable cheat sheet</a></li></ul></div>
+<div><h4>Learn &amp; join</h4><ul><li><a href="guides.html">All guides</a></li><li><a href="the-32766-limit.html">Why 32766?</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html">160 Challenge</a></li><li><a href="support.html">Support the lab</a></li><li><a href="careers.html">Careers &amp; talent</a></li><li><a href="advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="teams.html">For teams</a></li><li><a href="free-audit.html">Free Fit Audit</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="editorial-policy.html">Editorial policy</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="cookies.html">Cookies</a></li><li><a href="disclaimer.html">Disclaimer</a></li><li><a href="trademark.html">Trademark &amp; ©</a></li></ul></div>
+</div>
+<div class="legal">
+<p><b>Trademark &amp; copyright disclosure:</b> “32766” is used on this site only as a domain-name identifier and as a reference to a widely documented numeric limit (read “327 66”). No claim of exclusive rights is made to the number 32766 or 32767, and this site is not affiliated with, endorsed by or sponsored by the Apache Software Foundation, Elastic, OpenSearch, Microsoft, Google, Meta, X, LinkedIn, TikTok, OpenAI, Anthropic, the U.S. Postal Service or any company, product, place or person that uses these numbers. All product names, logos and trademarks belong to their respective owners and are used for identification only. <a href="trademark.html">Full disclosure</a>.</p>
+<p>Informational tools and content — limits are reviewed regularly but platforms change them; confirm critical limits in official documentation. Some pages show advertising served by Google AdSense. © <span class="year">2026</span> 32766.com. Original text, tools, data compilation and design © 32766.com.</p>
+</div></div></footer>
+<div class="mcta"><a class="btn btn-ghost" href="tools.html">Tools</a><a class="btn btn-amber" href="free-audit.html">Free audit</a></div>
+<aside class="nudge" id="nudge" aria-label="Free audit offer" hidden><button class="nudge-x" aria-label="Close" data-nudge-close>×</button><b>Hitting a limit you can't see?</b><p>Get a free Fit Audit of your titles, ads, SMS or search index — a human-written fix list, usually within one business day.</p><a class="btn btn-amber btn-sm btn-block" href="free-audit.html">Get my free audit</a></aside>
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice"><p style="margin:0">We use essential storage and, with your consent, cookies from Google to show and measure ads. Your text never leaves your browser. See our <a href="cookies.html">Cookie Policy</a>.</p>
+<div class="acts"><button class="btn btn-amber btn-sm" data-cookie="all">Accept</button><button class="btn btn-ghost btn-sm" data-cookie="essential">Essential only</button></div></div>
+<script src="assets/js/limits-data.js" defer></script><script src="assets/js/tools.js" defer></script><script src="assets/js/main.js" defer></script>
+</body></html>

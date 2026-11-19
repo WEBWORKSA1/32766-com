@@ -1,0 +1,33 @@
+<!--
+title: How SMS Segments Are Billed — 160, 153, 70, 67
+description: Why one SMS can bill as two or three: GSM-7 vs UCS-2, multipart headers, extension characters, a worked cost example and a checklist.
+group: guides
+priority: 0.8
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"Article","headline":"How SMS segments are billed","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › SMS segments</div>
+<span class="eyebrow">SMS marketing</span>
+<h1>How SMS segments are billed</h1>
+<p class="lead">Text messages are billed per segment, and a single character can change how many segments you send. Here are the numbers that matter.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 6-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="tbl-wrap"><table><thead><tr><th>Encoding</th><th style="text-align:right">1 segment</th><th style="text-align:right">2 segments</th><th style="text-align:right">3 segments</th><th style="text-align:right">Each extra</th></tr></thead><tbody>
+<tr><td>GSM-7</td><td class="n">≤160</td><td class="n">≤306</td><td class="n">≤459</td><td class="n">+153</td></tr>
+<tr><td>UCS-2</td><td class="n">≤70</td><td class="n">≤134</td><td class="n">≤201</td><td class="n">+67</td></tr>
+</tbody></table></div>
+<h2>Why 160 and 70?</h2>
+<p>An SMS carries 140 bytes of payload. GSM-7 packs each character into 7 bits: 140 × 8 ÷ 7 = 160 characters. UCS-2 uses 16 bits per character: 140 ÷ 2 = 70. When a message is too long, it's split and each part carries a small User Data Header so phones can reassemble it — leaving 153 GSM-7 or 67 UCS-2 characters per part.</p>
+<h2>The emoji (and smart-quote) trap</h2>
+<p>GSM-7 has English letters, digits, common punctuation and some Western European accents. Emoji, curly quotes (“ ” ‘ ’), en and em dashes (– —), the ellipsis character (…) and most non-Latin scripts aren't in it. One such character switches the <i>entire</i> message to UCS-2.</p>
+<div class="callout"><b>Worked example:</b> a 140-character promo is 1 GSM-7 segment. Add “🎉” and it becomes 142 UCS-2 units (the emoji counts as 2) → 3 segments. Sent to 25,000 subscribers at $0.008 per segment, that's $600 instead of $200.</div>
+<h2>Extension characters count double</h2>
+<p>In GSM-7, these characters need an escape code and count as 2: <code>^ { } \ [ ] ~ | €</code>. A message of 155 regular characters plus two “€” is 159 — still one segment, but close.</p>
+<h2>Checklist for one-segment messages</h2>
+<ol><li>Draft in plain text, not a word processor.</li><li>Run the text through the <a href="sms-counter.html">SMS counter</a> and fix highlighted characters.</li><li>Shorten links with a branded short domain.</li><li>Keep required compliance text (e.g. opt-out wording) in the budget.</li><li>Use emoji only where they justify the 2–3× cost.</li></ol>
+<h3>Watch</h3>
+{{VIDEO:44MGSfUt_bo|Understanding SMS character limits and message parts (standard + Unicode)}}
+<div class="callout"><b>Sending at scale?</b> Get a free audit of your SMS templates — encoding, length and wording. <a href="free-audit.html?need=messaging">Request it →</a></div>
+</div></section>

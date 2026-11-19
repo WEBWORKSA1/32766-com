@@ -1,0 +1,32 @@
+<!--
+title: Social Media Character Limits (2026) | 32766
+description: Every social limit in one table: X 280, Instagram 2,200 and 30 hashtags, LinkedIn 3,000, TikTok, YouTube, Threads 500, Bluesky 300.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does Instagram count spaces and line breaks?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every space and line break counts toward the 2,200-character caption limit."}}, {"@type": "Question", "name": "Do hashtags count toward the character limit?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, hashtags are part of the caption text. Instagram also caps posts at 30 hashtags."}}, {"@type": "Question", "name": "What's the X character limit for Premium?", "acceptedAnswer": {"@type": "Answer", "text": "X Premium (and Basic) subscribers can post up to 25,000 characters; free accounts get 280."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › Social media</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>Social media character limits</h1>
+<div class="lead"><p>Each network caps posts, captions, bios and comments differently — and counts differently. X weighs emoji and most CJK characters as two and every link as 23. LinkedIn and many schedulers count UTF-16 units, so bold “Unicode font” letters and emoji cost double. Instagram and TikTok show only the first line or two before “… more”, so the <i>visible</i> limit matters as much as the hard one.</p></div>
+<p><a class="btn btn-amber" href="character-counter.html">Check a post now</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:social}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>Hard limits vs. visible limits</h2><p>The hard limit is the most a platform accepts. The visible limit is how much shows in the feed before truncation — about 125 characters on Instagram, around 150 on LinkedIn, and roughly 100 on TikTok's feed. Your hook has to land inside the visible limit; the rest is for people who tapped “more”.</p>
+<h2>What happens when you go over</h2><ul><li><b>X:</b> the post button disables; Premium users can post up to 25,000 characters but long posts are folded.</li><li><b>Instagram:</b> captions over 2,200 characters or with more than 30 hashtags fail to publish.</li><li><b>LinkedIn:</b> the composer stops accepting input at 3,000.</li><li><b>Schedulers:</b> tools like Buffer validate before scheduling, often using UTF-16 counts.</li></ul>
+<h2>Tips</h2><ul><li>Draft once at the strictest limit you post to (usually X at 280), then expand for longer networks.</li><li>Avoid “bold” Unicode letters — they double your count, break screen readers and hurt search.</li><li>Links on X always cost 23 characters, so shorteners don't save space there.</li></ul>
+<h2>FAQ</h2><details><summary>Does Instagram count spaces and line breaks?</summary><p>Yes. Every space and line break counts toward the 2,200-character caption limit.</p></details><details><summary>Do hashtags count toward the character limit?</summary><p>Yes, hashtags are part of the caption text. Instagram also caps posts at 30 hashtags.</p></details><details><summary>What's the X character limit for Premium?</summary><p>X Premium (and Basic) subscribers can post up to 25,000 characters; free accounts get 280.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-seo.html">SEO & search snippets</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-email-sms-messaging.html">Email, SMS & messaging</a> · <a href="limits-databases-search.html">Databases & search engines</a> · <a href="limits-ai-models.html">AI & LLM tokens</a> · <a href="limits-spreadsheets-files-systems.html">Spreadsheets, files & systems</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=social">Get my free audit</a></div>
+</div>
+</div></section>

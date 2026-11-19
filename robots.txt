@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /build/
+
+User-agent: Mediapartners-Google
+Allow: /
+
+Sitemap: https://32766.com/sitemap.xml

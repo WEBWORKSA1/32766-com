@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UTF-8 Byte Counter — Check the 32,766-Byte Limit</title>
+<meta name="description" content="Count UTF-8, UTF-16 and UTF-32 bytes, spot multi-byte characters and trim safely to Lucene&#x27;s 32,766-byte term limit or any database limit.">
+<link rel="canonical" href="https://32766.com/byte-counter.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0c0e12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="32766 — Limits Lab">
+<meta property="og:title" content="UTF-8 Byte Counter — Check the 32,766-Byte Limit">
+<meta property="og:description" content="Count UTF-8, UTF-16 and UTF-32 bytes, spot multi-byte characters and trim safely to Lucene&#x27;s 32,766-byte term limit or any database limit.">
+<meta property="og:url" content="https://32766.com/byte-counter.html">
+<meta property="og:image" content="https://32766.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"32766 — Limits Lab","url":"https://32766.com/","description":"Free tools that check whether your text fits: characters, words, UTF-8 bytes and AI tokens against real platform, SEO, SMS, database and AI limits."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UTF-8 Byte Counter","url":"https://32766.com/byte-counter.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body data-group="tools">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar" role="note"><a href="https://web.works/contact" target="_blank" rel="noopener">Contact, if you are interested in this website/domain name/Sponsorship/Advertisement/Partnership</a></div>
+<header class="site"><div class="wrap nav">
+<a class="logo" href="index.html" aria-label="32766 Limits Lab home"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<nav aria-label="Main"><ul class="menu" id="menu"><li><a href="tools.html" data-group="tools">Tools</a></li><li><a href="limits.html" data-group="limits">Limits Library</a></li><li><a href="guides.html" data-group="guides">Guides</a></li><li><a href="the-32766-limit.html">Why 32766</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html" data-group="community">Challenge</a></li><li><a href="support.html" data-group="community">Support</a></li><li><a href="teams.html" data-group="teams">For Teams</a></li><li class="menu-cta"><a href="free-audit.html">Free Fit Audit</a></li></ul></nav>
+<div class="nav-cta"><a class="btn btn-amber btn-sm" href="free-audit.html">Free Fit Audit</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle light/dark theme">◐</button>
+<button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">☰</button></div>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › UTF-8 byte counter</div>
+<h1>UTF-8 byte counter</h1>
+<p class="lead">Databases, search engines, APIs and file systems limit <b>bytes</b>, not characters. Measure the real size of your string, see which characters are multi-byte, and trim without corrupting a character.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div>
+<div class="tool" id="checker">
+  <div class="tool-head"><span class="t">FIT CHECKER · runs in your browser</span>
+    <div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="sample">Sample</button><button class="btn btn-ghost btn-sm" data-act="copy">Copy</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+  <label for="txt" class="sr">Your text</label>
+  <textarea id="txt" placeholder="Paste or type your text — caption, title, SMS, prompt, JSON value…" spellcheck="true"></textarea>
+  <div class="counts">
+    <div><b data-k="chars">0</b><span>Characters</span></div>
+    <div><b data-k="words">0</b><span>Words</span></div>
+    <div><b data-k="bytes">0</b><span>UTF-8 bytes</span></div>
+    <div><b data-k="tokens">0</b><span>AI tokens (est.)</span></div>
+    <div><b data-k="noSpace">0</b><span>Chars without spaces</span></div>
+    <div><b data-k="sentences">0</b><span>Sentences</span></div>
+    <div><b data-k="x">0</b><span>X weighted count</span></div>
+    <div><b data-k="readMin">0 sec</b><span>Reading time</span></div>
+  </div>
+  <div class="big-meter" id="bigMeter" data-limit="32766" data-method="b">
+    <div class="row"><span class="num"><span class="used">0</span> / 32,766 bytes</span><span class="muted left">32,766 to spare</span></div>
+    <div class="meter"><i></i></div>
+    <small class="muted">The 32,766-byte line is Apache Lucene's single-term limit (Elasticsearch, OpenSearch, Solr).</small>
+  </div>
+  <div class="fixcta" id="fixcta"><b>Over 32,766 bytes?</b> As a keyword value this text would trigger the “immense term” error. <a href="guide-fix-elasticsearch-immense-term.html">See the fix</a> or <a href="free-audit.html?need=search">get a free fix plan</a>.</div>
+</div>
+
+<div class="card" style="margin-top:18px"><h3>Encodings</h3>
+<div class="counts" style="border:1px solid var(--line);border-radius:10px">
+<div><b data-k="bytes">0</b><span>UTF-8 bytes</span></div><div><b data-k="utf16">0</b><span>UTF-16 units (×2 bytes)</span></div><div><b data-k="utf32">0</b><span>UTF-32 bytes</span></div><div><b data-k="codepoints">0</b><span>Code points</span></div>
+</div>
+<div class="row2" style="margin-top:14px;align-items:end"><div class="field" style="margin:0"><label for="trimTo">Trim to (bytes)</label><input type="number" id="trimTo" value="32766" min="1"></div>
+<div><button class="btn btn-amber btn-block" id="trimBytes" type="button">Trim safely to this many bytes</button></div></div>
+<p class="muted" style="font-size:.85rem;margin:.6rem 0 0">Trimming never splits a character or an emoji sequence, so the result is always valid UTF-8.</p>
+</div>
+<div class="card" style="margin-top:18px"><h3>Multi-byte characters in your text</h3><div id="byteTable"></div></div>
+</div>
+<div>
+<div class="card" id="limitChecker">
+  <h3 style="margin-bottom:.2em">Where does it fit?</h3>
+  <p class="lc-sum" id="lcSum">Paste text to check it against real limits.</p>
+  <div class="lc-controls">
+    <label class="sr" for="lcCat">Category</label>
+    <select id="lcCat"><option value="pop">Most-checked limits</option><option value="all">All checkable limits</option></select>
+    <label class="sr" for="lcSearch">Search limits</label>
+    <input type="search" id="lcSearch" placeholder="Search: tiktok, sms, varchar…">
+  </div>
+  <ul class="lc-list" id="lcList"></ul>
+  <p class="muted" style="font-size:.8rem;margin:10px 0 0">Limits reviewed November 2026 · <a href="limits.html">Full Limits Library</a> · Platforms change limits — confirm critical ones in official docs.</p>
+</div>
+
+<div class="card" style="margin-top:18px"><h3>UTF-8 sizes at a glance</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Characters</th><th style="text-align:right">Bytes each</th></tr></thead><tbody>
+<tr><td>ASCII: A–Z, 0–9, basic punctuation</td><td class="n">1</td></tr>
+<tr><td>Accented Latin, Greek, Cyrillic, Hebrew, Arabic</td><td class="n">2</td></tr>
+<tr><td>Most CJK, Hindi, Thai, €, “smart quotes”, —</td><td class="n">3</td></tr>
+<tr><td>Emoji, rare CJK, historic scripts</td><td class="n">4</td></tr>
+<tr><td>Emoji sequences (skin tones, families, flags)</td><td class="n">8–35</td></tr>
+</tbody></table></div></div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>Why bytes matter more than characters</h2>
+<p>A field that holds “1,000 characters” of English may hold only 333 characters of Japanese, and far fewer emoji. Storage engines, network protocols and indexes allocate by bytes, so a limit written in bytes behaves very differently across languages. When a value goes over, you get errors like Lucene's <code>bytes can be at most 32766 in length</code>, PostgreSQL's <code>index row size exceeds btree maximum</code>, or silently truncated data.</p>
+<h3>The 32,766-byte line</h3>
+<p>Apache Lucene, the library inside Elasticsearch, OpenSearch and Solr, refuses any single indexed term longer than 32,766 bytes. A <code>keyword</code> field stores the whole value as one term, so a long description or a base64 blob mapped as <code>keyword</code> triggers the error. The meter above turns red when your text crosses that line. Fixes are in our <a href="guide-fix-elasticsearch-immense-term.html">step-by-step guide</a>.</p>
+<h3>Byte limits worth knowing</h3>
+<div class="tbl-wrap"><table class="limits-table"><thead><tr><th>Platform</th><th>Field</th><th style="text-align:right">Limit</th></tr></thead><tbody><tr data-cat="data"><td><b>Apache Lucene (Elasticsearch, OpenSearch, Solr)</b></td><td>Single indexed term</td><td class="n">32,766 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Elasticsearch</b></td><td>keyword ignore_above (dynamic mapping default)</td><td class="n">256 <small>characters</small></td></tr><tr data-cat="data"><td><b>Elasticsearch</b></td><td>index.max_result_window</td><td class="n">10,000 <small>hits</small></td></tr><tr data-cat="data"><td><b>Elasticsearch</b></td><td>index.mapping.total_fields.limit</td><td class="n">1,000 <small>fields</small></td></tr><tr data-cat="data"><td><b>Elasticsearch</b></td><td>http.max_content_length</td><td class="n">104,857,600 <small>bytes</small></td></tr><tr data-cat="data"><td><b>MySQL</b></td><td>VARCHAR / row size</td><td class="n">65,535 <small>bytes</small></td></tr><tr data-cat="data"><td><b>MySQL</b></td><td>TEXT</td><td class="n">65,535 <small>bytes</small></td></tr><tr data-cat="data"><td><b>MySQL (InnoDB)</b></td><td>Index key prefix (DYNAMIC rows)</td><td class="n">3,072 <small>bytes</small></td></tr><tr data-cat="data"><td><b>MySQL</b></td><td>Identifier (table/column name)</td><td class="n">64 <small>characters</small></td></tr><tr data-cat="data"><td><b>PostgreSQL</b></td><td>B-tree index row</td><td class="n">2,704 <small>bytes</small></td></tr><tr data-cat="data"><td><b>PostgreSQL</b></td><td>Identifier</td><td class="n">63 <small>bytes</small></td></tr><tr data-cat="data"><td><b>PostgreSQL</b></td><td>NOTIFY payload</td><td class="n">8,000 <small>bytes</small></td></tr><tr data-cat="data"><td><b>PostgreSQL</b></td><td>text / varchar value</td><td class="n">1,073,741,824 <small>bytes</small></td></tr><tr data-cat="data"><td><b>SQL Server</b></td><td>varchar(n)</td><td class="n">8,000 <small>bytes</small></td></tr><tr data-cat="data"><td><b>SQL Server</b></td><td>nvarchar(n)</td><td class="n">4,000 <small>characters</small></td></tr><tr data-cat="data"><td><b>SQL Server</b></td><td>Clustered index key</td><td class="n">900 <small>bytes</small></td></tr><tr data-cat="data"><td><b>SQL Server</b></td><td>Identifier</td><td class="n">128 <small>characters</small></td></tr><tr data-cat="data"><td><b>Oracle</b></td><td>VARCHAR2 — standard</td><td class="n">4,000 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Oracle</b></td><td>VARCHAR2 — MAX_STRING_SIZE=EXTENDED / PL/SQL</td><td class="n">32,767 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Oracle</b></td><td>Identifier (12.2+)</td><td class="n">128 <small>bytes</small></td></tr><tr data-cat="data"><td><b>MongoDB</b></td><td>Document</td><td class="n">16,777,216 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Amazon DynamoDB</b></td><td>Item</td><td class="n">409,600 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Amazon DynamoDB</b></td><td>Partition key value</td><td class="n">2,048 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Amazon DynamoDB</b></td><td>Sort key value</td><td class="n">1,024 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Cloud Firestore</b></td><td>Document</td><td class="n">1,048,576 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Redis</b></td><td>String value / key</td><td class="n">536,870,912 <small>bytes</small></td></tr><tr data-cat="data"><td><b>SQLite</b></td><td>String or BLOB (default)</td><td class="n">1,000,000,000 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Apache Kafka</b></td><td>Message (broker default)</td><td class="n">1,048,588 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Amazon S3</b></td><td>Object key</td><td class="n">1,024 <small>bytes</small></td></tr><tr data-cat="data"><td><b>Amazon S3</b></td><td>User-defined metadata</td><td class="n">2,048 <small>bytes</small></td></tr></tbody></table></div>
+<h2>FAQ</h2>
+<details><summary>How many bytes is an emoji?</summary><p>A single emoji is usually 4 bytes in UTF-8. Emoji with skin tones, gender signs or family combinations are several emoji joined with invisible zero-width joiners — 👩🏽‍💻 is 15 bytes.</p></details>
+<details><summary>How do I count bytes in code?</summary><p>JavaScript: <code>new TextEncoder().encode(s).length</code>. Python: <code>len(s.encode('utf-8'))</code>. Java: <code>s.getBytes(StandardCharsets.UTF_8).length</code>. SQL (MySQL): <code>OCTET_LENGTH(col)</code>; PostgreSQL: <code>octet_length(col)</code>.</p></details>
+<details><summary>Is MySQL's utf8 the same as UTF-8?</summary><p>No. MySQL's legacy <code>utf8</code> (utf8mb3) stores at most 3 bytes per character and cannot store emoji. Use <code>utf8mb4</code>, and remember it can use 4 bytes per character when you size columns and indexes.</p></details>
+</div></section>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="foot-grid">
+<div><a class="logo" href="index.html"><span class="num">32766</span><span class="lname">Limits Lab</span></a>
+<p class="muted" style="margin-top:12px">Free, private, in-browser tools that tell you whether your text fits — characters, words, bytes and AI tokens checked against 160 real-world limits. Stay one byte under the limit.</p>
+<form class="js-form inline-form" data-subject="Newsletter: The Limit Log" data-ok="You're in. The Limit Log arrives when platforms change their limits — no spam.">
+<input type="email" name="email" required placeholder="you@email.com" aria-label="Email for The Limit Log newsletter"><input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="list" value="The Limit Log"><button class="btn btn-amber btn-sm" type="submit">Get The Limit Log</button><div class="form-msg" role="status"></div></form></div>
+<div><h4>Tools</h4><ul><li><a href="character-counter.html">Character counter</a></li><li><a href="word-counter.html">Word counter</a></li><li><a href="byte-counter.html">UTF-8 byte counter</a></li><li><a href="token-counter.html">AI token counter</a></li><li><a href="text-splitter.html">Text splitter</a></li><li><a href="truncate-text.html">Truncate text</a></li><li><a href="sms-counter.html">SMS counter</a></li><li><a href="serp-preview.html">SERP preview</a></li><li><a href="text-cleaner.html">Text cleaner</a></li></ul></div>
+<div><h4>Limits</h4><ul><li><a href="limits.html">Limits Library</a></li><li><a href="limits-social-media.html">Social media</a></li><li><a href="limits-seo.html">SEO &amp; search snippets</a></li><li><a href="limits-ads.html">Advertising copy</a></li><li><a href="limits-email-sms-messaging.html">Email, SMS &amp; messaging</a></li><li><a href="limits-databases-search.html">Databases &amp; search engines</a></li><li><a href="limits-ai-models.html">AI &amp; LLM tokens</a></li><li><a href="limits-spreadsheets-files-systems.html">Spreadsheets, files &amp; systems</a></li><li><a href="limits-usernames-urls-domains.html">Usernames, URLs &amp; domains</a></li><li><a href="cheat-sheet.html">Printable cheat sheet</a></li></ul></div>
+<div><h4>Learn &amp; join</h4><ul><li><a href="guides.html">All guides</a></li><li><a href="the-32766-limit.html">Why 32766?</a></li><li><a href="videos.html">Videos</a></li><li><a href="challenge.html">160 Challenge</a></li><li><a href="support.html">Support the lab</a></li><li><a href="careers.html">Careers &amp; talent</a></li><li><a href="advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="teams.html">For teams</a></li><li><a href="free-audit.html">Free Fit Audit</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="editorial-policy.html">Editorial policy</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="cookies.html">Cookies</a></li><li><a href="disclaimer.html">Disclaimer</a></li><li><a href="trademark.html">Trademark &amp; ©</a></li></ul></div>
+</div>
+<div class="legal">
+<p><b>Trademark &amp; copyright disclosure:</b> “32766” is used on this site only as a domain-name identifier and as a reference to a widely documented numeric limit (read “327 66”). No claim of exclusive rights is made to the number 32766 or 32767, and this site is not affiliated with, endorsed by or sponsored by the Apache Software Foundation, Elastic, OpenSearch, Microsoft, Google, Meta, X, LinkedIn, TikTok, OpenAI, Anthropic, the U.S. Postal Service or any company, product, place or person that uses these numbers. All product names, logos and trademarks belong to their respective owners and are used for identification only. <a href="trademark.html">Full disclosure</a>.</p>
+<p>Informational tools and content — limits are reviewed regularly but platforms change them; confirm critical limits in official documentation. Some pages show advertising served by Google AdSense. © <span class="year">2026</span> 32766.com. Original text, tools, data compilation and design © 32766.com.</p>
+</div></div></footer>
+<div class="mcta"><a class="btn btn-ghost" href="tools.html">Tools</a><a class="btn btn-amber" href="free-audit.html">Free audit</a></div>
+<aside class="nudge" id="nudge" aria-label="Free audit offer" hidden><button class="nudge-x" aria-label="Close" data-nudge-close>×</button><b>Hitting a limit you can't see?</b><p>Get a free Fit Audit of your titles, ads, SMS or search index — a human-written fix list, usually within one business day.</p><a class="btn btn-amber btn-sm btn-block" href="free-audit.html">Get my free audit</a></aside>
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice"><p style="margin:0">We use essential storage and, with your consent, cookies from Google to show and measure ads. Your text never leaves your browser. See our <a href="cookies.html">Cookie Policy</a>.</p>
+<div class="acts"><button class="btn btn-amber btn-sm" data-cookie="all">Accept</button><button class="btn btn-ghost btn-sm" data-cookie="essential">Essential only</button></div></div>
+<script src="assets/js/limits-data.js" defer></script><script src="assets/js/tools.js" defer></script><script src="assets/js/main.js" defer></script>
+</body></html>

@@ -1,0 +1,33 @@
+<!--
+title: AI Token Limits & Context Windows | 32766
+description: What 32K, 128K, 200K, 1M and 2M-token context windows hold, characters per token, embedding limits and RAG chunk sizes — with an estimator.
+group: limits
+scripts: tools
+priority: 0.8
+schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many tokens is 1,000 words?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 1,300–1,400 tokens for English prose."}}, {"@type": "Question", "name": "Is the context window input-only?", "acceptedAnswer": {"@type": "Answer", "text": "Usually it's input plus output combined; some providers list separate input and output limits. Check the model card."}}, {"@type": "Question", "name": "Why does my non-English text use more tokens?", "acceptedAnswer": {"@type": "Answer", "text": "Tokenizers are trained mostly on English, so other languages split into more, smaller pieces."}}]}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="limits.html">Limits Library</a> › AI & LLM tokens</div>
+<span class="eyebrow">Limits hub · reviewed November 2026</span>
+<h1>AI & LLM token limits</h1>
+<div class="lead"><p>Language models measure everything in tokens: your system prompt, the conversation so far, retrieved documents, tool definitions and the answer. The context window is the total that fits in one request. Output caps are usually much smaller than windows. Because models and limits change monthly, this hub lists durable tiers and rules of thumb rather than a model-by-model table that would be stale next week.</p></div>
+<p><a class="btn btn-amber" href="token-counter.html">Estimate tokens</a> <a class="btn btn-ghost" href="cheat-sheet.html">Printable cheat sheet</a></p>
+</div></section>
+<section class="section-tight"><div class="wrap">
+{{TABLE:ai}}
+<p class="muted" style="font-size:.85rem;margin-top:10px">“Counted as” shows how the platform measures length. Limits change — confirm business-critical values in the official documentation. Spotted an outdated value? <a href="contact.html">Tell us</a>.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="article"><h2>What fits in a window?</h2><div class="tbl-wrap"><table><thead><tr><th>Window</th><th style="text-align:right">≈ English words</th><th style="text-align:right">≈ Pages (500 words)</th></tr></thead><tbody>
+<tr><td>32,768 tokens</td><td class="n">24,500</td><td class="n">49</td></tr><tr><td>128,000 tokens</td><td class="n">96,000</td><td class="n">192</td></tr><tr><td>200,000 tokens</td><td class="n">150,000</td><td class="n">300</td></tr><tr><td>1,000,000 tokens</td><td class="n">750,000</td><td class="n">1,500</td></tr><tr><td>2,000,000 tokens</td><td class="n">1,500,000</td><td class="n">3,000</td></tr></tbody></table></div>
+<p class="muted" style="font-size:.88rem">Using 0.75 words per token. Code, tables and non-English text fit less.</p>
+<h2>Budgeting a request</h2><p>Window ≥ system prompt + tools + history + retrieved context + your question + the maximum answer you allow. Reserve the answer first, keep a 10–20% margin, and don't assume quality stays flat as you approach the limit. Read the <a href="guide-ai-tokens-context-windows.html">full guide</a>.</p>
+<h2>FAQ</h2><details><summary>How many tokens is 1,000 words?</summary><p>Roughly 1,300–1,400 tokens for English prose.</p></details><details><summary>Is the context window input-only?</summary><p>Usually it's input plus output combined; some providers list separate input and output limits. Check the model card.</p></details><details><summary>Why does my non-English text use more tokens?</summary><p>Tokenizers are trained mostly on English, so other languages split into more, smaller pieces.</p></details>
+<p class="muted" style="margin-top:24px">Other hubs: <a href="limits-social-media.html">Social media</a> · <a href="limits-seo.html">SEO & search snippets</a> · <a href="limits-ads.html">Advertising copy</a> · <a href="limits-email-sms-messaging.html">Email, SMS & messaging</a> · <a href="limits-databases-search.html">Databases & search engines</a> · <a href="limits-spreadsheets-files-systems.html">Spreadsheets, files & systems</a> · <a href="limits-usernames-urls-domains.html">Usernames, URLs & domains</a></p>
+</div>
+<div>{{LIMIT_LIST}}
+<div class="tool" style="margin-top:18px"><div class="tool-head"><span class="t">QUICK CHECK</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div><label for="txt" class="sr">Text</label><textarea id="txt" placeholder="Paste text to test against these limits…" style="min-height:140px"></textarea>
+<div class="counts"><div><b data-k="chars">0</b><span>Characters</span></div><div><b data-k="bytes">0</b><span>Bytes</span></div><div><b data-k="words">0</b><span>Words</span></div><div><b data-k="tokens">0</b><span>Tokens (est.)</span></div></div></div>
+<div class="card" style="margin-top:18px"><h3>Need this done for you?</h3><p class="muted">Free Fit Audit: we check your content or system against these limits and send a prioritized fix list.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=ai">Get my free audit</a></div>
+</div>
+</div></section>

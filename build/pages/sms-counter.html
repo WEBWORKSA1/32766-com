@@ -1,0 +1,54 @@
+<!--
+title: SMS Character & Segment Counter (GSM-7/UCS-2)
+description: Count SMS characters and segments, detect GSM-7 vs Unicode, highlight the emoji or smart quotes that double cost, fix them and estimate spend.
+scripts: tools
+group: tools
+priority: 0.8
+schema: {"@context":"https://schema.org","@type":"WebApplication","name":"SMS Segment Counter","url":"https://32766.com/sms-counter.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › SMS counter</div>
+<h1>SMS character &amp; segment counter</h1>
+<p class="lead">One smart quote or emoji can switch a whole text message to Unicode and cut each segment from 160 to 70 characters. See your encoding, segments and cost — and fix it.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="tool">
+<div class="tool-head"><span class="t">SMS COUNTER</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="sample" data-sample="Hi Sam! Your order #32766 has shipped – track it here: https://example.com/t/32766. Reply STOP to opt out. 📦">Sample</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="smsTxt" class="sr">SMS message</label>
+<textarea id="smsTxt" placeholder="Type your SMS…" style="min-height:160px"></textarea>
+<div class="counts">
+<div><b id="smsEnc">GSM-7</b><span>Encoding</span></div>
+<div><b id="smsUnits">0</b><span>Characters (billed units)</span></div>
+<div><b id="smsSeg">0</b><span>Segments</span></div>
+<div><b id="smsPer">160</b><span>Chars per segment</span></div>
+</div>
+<div class="big-meter"><div class="row"><span class="num" id="smsLeft">160 left</span></div><div class="meter" id="smsMeter"><i></i></div></div>
+<div class="tool-body">
+<p class="lbl">Characters forcing Unicode: <span id="smsBad" class="mono"></span></p>
+<div class="hl-out" id="smsHl"></div>
+<p style="margin-top:12px"><button class="btn btn-amber btn-sm" id="smsFix" type="button">Replace smart quotes, dashes &amp; ellipses</button></p>
+<div class="row2">
+<div class="field"><label for="smsPrice">Price per segment ($)</label><input type="number" id="smsPrice" step="0.0001" min="0" placeholder="e.g. 0.0079"></div>
+<div class="field"><label for="smsRecip">Recipients</label><input type="number" id="smsRecip" min="0" placeholder="e.g. 10000"></div>
+</div>
+<p class="mono" id="smsCost"></p>
+</div>
+</div>
+<div>
+<div class="card"><h3>SMS limits</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Encoding</th><th style="text-align:right">Single</th><th style="text-align:right">Per part (multipart)</th></tr></thead><tbody>
+<tr><td>GSM-7 (basic Latin)</td><td class="n">160</td><td class="n">153</td></tr>
+<tr><td>UCS-2 (Unicode)</td><td class="n">70</td><td class="n">67</td></tr>
+</tbody></table></div>
+<p class="muted" style="font-size:.86rem;margin-top:10px">Multipart messages lose 7 (GSM-7) or 3 (UCS-2) characters per segment to a header that stitches the parts together. Characters such as € [ ] { } ^ ~ \ | count as 2 in GSM-7.</p></div>
+<div class="card" style="margin-top:18px"><h3>Sending at volume?</h3><p class="muted">We review SMS templates for encoding traps, length and compliance wording — free.</p><a class="btn btn-amber btn-block" href="free-audit.html?need=messaging">Get a free SMS template audit</a></div>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>How SMS encoding works</h2>
+<p>Classic SMS carries 140 bytes. In the GSM-7 alphabet each character takes 7 bits, which fits 160 characters. GSM-7 covers English letters, digits, common punctuation and a set of Western European accented letters. Any character outside it — an emoji, a curly “smart” quote, an en dash, most non-Latin scripts — forces the entire message into UCS-2, a 16-bit encoding that fits only 70 characters.</p>
+<p>Carriers and providers bill per segment, so a 150-character promo that picks up one 📦 jumps from 1 segment to 3. Across 10,000 recipients that's 20,000 extra billed segments. The highlighter shows exactly which characters cause it, and the fix button swaps typographic punctuation for plain equivalents.</p>
+<h3>Practical rules</h3>
+<ul><li>Write in a plain-text editor; word processors insert smart quotes and dashes.</li><li>Keep transactional SMS under 160 GSM-7 characters where possible.</li><li>If you need emoji or a non-Latin language, budget for 70/67-character segments.</li><li>Leave room for opt-out text such as “Reply STOP to opt out,” which many regulations and carriers require.</li><li>Some providers transliterate or “smart-encode” automatically — check your provider's settings.</li></ul>
+<p>More in our guide: <a href="guide-sms-segments.html">how SMS segments are billed</a>.</p>
+</div></section>

@@ -1,0 +1,52 @@
+<!--
+title: Truncate Text to a Limit — Safely | 32766
+description: Shorten text to an exact character, byte or word limit with a clean ellipsis — never splitting a word, emoji or multi-byte character.
+scripts: tools
+group: tools
+priority: 0.7
+-->
+<section class="hero"><div class="wrap">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="tools.html">Tools</a> › Truncate text</div>
+<h1>Truncate text safely</h1>
+<p class="lead">Cut text to a hard limit and keep it readable: no half-words, no broken emoji, no invalid UTF-8.</p>
+</div></section>
+<section class="section-tight"><div class="wrap grid split">
+<div class="tool">
+<div class="tool-head"><span class="t">TRUNCATOR</span><div class="tool-actions"><button class="btn btn-ghost btn-sm" data-act="paste">Paste</button><button class="btn btn-ghost btn-sm" data-act="sample">Sample</button><button class="btn btn-ghost btn-sm" data-act="clear">Clear</button></div></div>
+<label for="trTxt" class="sr">Original text</label>
+<textarea id="trTxt" placeholder="Paste the text to shorten…"></textarea>
+<div class="tool-body">
+<div class="tabs"><button data-trp="chars:60">SEO title 60</button><button data-trp="chars:158">Meta description 158</button><button data-trp="chars:30">Ads headline 30</button><button data-trp="chars:90">Ads description 90</button><button data-trp="chars:125">Instagram preview 125</button><button data-trp="chars:160">SMS 160</button><button data-trp="bytes:32766">Lucene 32,766 B</button><button data-trp="words:50">50 words</button></div>
+<div class="row2">
+<div class="field"><label for="trLimit">Limit</label><input type="number" id="trLimit" value="60" min="1"></div>
+<div class="field"><label for="trMode">Measured in</label><select id="trMode"><option value="chars">Characters</option><option value="bytes">UTF-8 bytes</option><option value="words">Words</option></select></div>
+<div class="field"><label for="trEll">Ending</label><select id="trEll"><option value="…">… (1 character)</option><option value="...">... (3 characters)</option><option value="">None</option><option value=" →"> →</option></select></div>
+<div class="field" style="padding-top:26px"><label class="check"><input type="checkbox" id="trWord" checked> Cut at a word boundary</label></div>
+</div>
+</div>
+</div>
+<div class="card"><h3>Result</h3>
+<label for="trOut" class="sr">Truncated text</label>
+<textarea id="trOut" readonly style="min-height:200px;border:1px solid var(--line-2);border-radius:10px;width:100%;background:var(--ink-2);color:var(--fg);padding:12px;font:inherit"></textarea>
+<p class="mono muted" id="trStats" style="font-size:.85rem"></p>
+<button class="btn btn-amber" id="trCopy" type="button">Copy result</button>
+</div>
+</div></section>
+<section><div class="wrap article">
+<h2>Truncation done right</h2>
+<p>Naive truncation — <code>text.slice(0, 60)</code> — causes three classic bugs: it cuts words in half, it splits emoji into broken “�” symbols, and in byte-limited systems it can slice a multi-byte UTF-8 character and produce invalid data. This tool works on whole grapheme clusters, measures the ending (an ellipsis is a character too), and backs up to the last space when “cut at a word boundary” is on.</p>
+<h3>Truncate, or rewrite?</h3>
+<p>For search titles, ad headlines and push notifications, a rewritten line almost always beats an ellipsis. Truncation is best for previews, database columns and logs. See <a href="guide-write-to-fit.html">12 ways to write to fit</a>.</p>
+<h3>Code snippets</h3>
+<pre><code>// JavaScript — grapheme-safe character truncation
+const seg = new Intl.Segmenter(undefined, {granularity: 'grapheme'});
+function truncate(s, max, end = '…') {
+  const g = [...seg.segment(s)].map(x => x.segment);
+  return g.length &lt;= max ? s : g.slice(0, max - 1).join('').trimEnd() + end;
+}
+
+# Python — truncate to N UTF-8 bytes without breaking a character
+def truncate_bytes(s, n):
+    return s.encode('utf-8')[:n].decode('utf-8', 'ignore')</code></pre>
+<p class="muted" style="font-size:.9rem">The Python one-liner is safe for code points but can still split an emoji sequence (e.g. a skin-tone modifier). For user-facing text, segment by graphemes first.</p>
+</div></section>

@@ -1,0 +1,41 @@
+<!--
+title: AI Tokens & Context Windows, Explained | 32766
+description: What tokens are, how much fits in 32K to 2M context windows, why code and non-English text cost more, and how to budget prompts and RAG.
+group: guides
+priority: 0.9
+ogtype: article
+schema: {"@context":"https://schema.org","@type":"Article","headline":"AI tokens and context windows explained","datePublished":"2026-11-19","dateModified":"2026-11-19","author":{"@type":"Organization","name":"32766.com Editorial"},"publisher":{"@type":"Organization","name":"32766.com"}}
+-->
+<section class="hero"><div class="wrap article">
+<div class="crumbs"><a href="index.html">Home</a> › <a href="guides.html">Guides</a> › AI tokens</div>
+<span class="eyebrow">AI builders</span>
+<h1>AI tokens &amp; context windows, explained</h1>
+<p class="lead">Every language model has a budget measured in tokens. Spend it well and you get faster, cheaper, better answers; overspend and the request fails or quality quietly drops.</p>
+<p class="meta-line">32766.com editorial · Updated November 19, 2026 · 8-minute read</p>
+</div></section>
+<section class="section-tight"><div class="wrap article">
+<div class="keybox"><b>Rules of thumb</b><ul><li>1 token ≈ 4 English characters ≈ 0.75 words.</li><li>The context window usually covers input <i>and</i> output.</li><li>Reserve the answer first, then fill the rest — leaving a margin.</li><li>Retrieval of relevant chunks usually beats pasting everything.</li></ul></div>
+<h2>What is a token?</h2>
+<p>Models don't read letters or words; they read tokens — chunks from a vocabulary of tens of thousands of pieces learned from training data. Common English words are often one token (“limit”), rarer words split into several (“tokenization” → “token” + “ization”), and spaces usually attach to the following word. Numbers, code, URLs and JSON break into many small tokens. Languages under-represented in training data — and scripts like Chinese, Japanese, Korean, Hindi or Thai — often need more tokens per character than English.</p>
+<h2>Context window vs. output limit</h2>
+<p>The context window is the maximum tokens a model can attend to in one request — system prompt, tool definitions, conversation history, retrieved documents, your question and the response. Most models also have a separate, smaller cap on output tokens per response. In 2026, frontier models commonly advertise windows from 200,000 to around 1–2 million tokens, while smaller and local models often run at 32K–128K. Windows and caps change frequently, so read the model card before you design around one.</p>
+<h2>A practical token budget</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Slice</th><th>Typical size</th><th>Tip</th></tr></thead><tbody>
+<tr><td>System prompt &amp; instructions</td><td class="n">500–3,000</td><td>Keep stable to benefit from prompt caching where offered.</td></tr>
+<tr><td>Tool / function definitions</td><td class="n">200–5,000</td><td>Each tool's JSON schema costs tokens on every call.</td></tr>
+<tr><td>Conversation history</td><td class="n">grows</td><td>Summarize or trim older turns.</td></tr>
+<tr><td>Retrieved context</td><td class="n">2,000–50,000</td><td>Top-k chunks of 300–800 tokens each.</td></tr>
+<tr><td>Reserved output</td><td class="n">1,000–16,000+</td><td>Set max output explicitly.</td></tr>
+<tr><td>Safety margin</td><td class="n">10–20%</td><td>Estimates are never exact.</td></tr>
+</tbody></table></div>
+<h2>Why not just use the whole window?</h2>
+<ul><li><b>Cost and latency</b> scale with input tokens, every call.</li><li><b>Recall</b> of details buried deep in very long inputs is less reliable on many models.</li><li><b>Headroom</b> — tool results and follow-ups need space later in a session.</li></ul>
+<h2>Chunking for retrieval (RAG)</h2>
+<p>Split documents into chunks small enough to be specific but big enough to make sense alone. Start with ~512 tokens and 10–20% overlap, keep headings with their paragraphs, store source and position metadata, and evaluate with real questions. Ensure chunks fit your embedding model's input limit (often 8,192 tokens). The <a href="text-splitter.html">text splitter</a> exports token-sized chunks as JSONL.</p>
+<h2>Estimating tokens</h2>
+<p>Our <a href="token-counter.html">token counter</a> gives a fast estimate (±15% for English prose) and checks fit against common windows. For billing-grade numbers, rely on the usage figures your provider's API returns.</p>
+<h3>Watch: how tokenizers work</h3>
+{{VIDEO:zduSFxRajkE|Let's build the GPT Tokenizer — Andrej Karpathy (2h13m deep dive)}}
+<div class="callout"><b>Building a RAG or agent pipeline?</b> We review chunking, prompt budgets and cost per request for free. <a href="free-audit.html?need=ai">Get a free AI pipeline audit →</a></div>
+<h3>Related</h3><p><a href="limits-ai-models.html">AI token limits hub</a> · <a href="guide-characters-vs-bytes.html">Characters vs bytes</a></p>
+</div></section>
